@@ -32,5 +32,7 @@ jobs:
           server: 95.143.191.235
           username: ${{ secrets.ftp_username_front2_test }}
           password: ${{ secrets.ftp_password_front2_test }}
+          protocol: ftp
+          port: 21
           local-dir: ./dist/
           server-dir: ./
