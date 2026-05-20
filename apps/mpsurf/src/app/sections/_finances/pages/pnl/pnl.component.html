@@ -1,0 +1,63 @@
+<app-filters-box [disabled]="(isGridLoading$ | async) || false " [filterGroups]="filterGroups" (filterChangeEvent)="onFilterChangeEvent($event)"></app-filters-box>
+<section class="chart">
+  @if((isGridLoading$ | async) || !chartOptions()){
+    <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="round"></nz-skeleton-element>
+  }
+  @else {
+    <apx-chart 
+      [series]="chartOptions()?.series!" 
+      [chart]="chartOptions()?.chart!" 
+      [xaxis]="chartOptions()?.xaxis!"
+      [yaxis]="chartOptions()?.yaxis!" 
+      [dataLabels]="chartOptions()?.dataLabels!" 
+      [stroke]="chartOptions()?.stroke!"
+      [legend]="chartOptions()?.legend!" 
+    />
+  }
+</section>
+<section class="table">
+  <p-treeTable [value]="tree" [columns]="columns" [scrollable]="true" [tableStyle]="{'min-width':'50rem'}">
+
+    <ng-template #header>
+      <tr style="height: 50px">
+
+        @if(isGridLoading$ | async){
+            <th><p-skeleton /></th>
+            <th><p-skeleton /></th>
+            <th><p-skeleton /></th>
+        }
+        @else {
+          @for (col of columns; track col) {
+            <th>{{ col.header }}</th>
+          }
+        }
+
+      </tr>
+    </ng-template>
+
+    <ng-template #body let-rowNode let-rowData="rowData" let-columns="columns">
+      <tr [ttRow]="rowNode">
+        @if(isGridLoading$ | async){
+          <td><p-skeleton /></td>
+          <td><p-skeleton /></td>
+          <td><p-skeleton /></td>
+        }
+        @else {
+          @for (col of columns; let first = $first; track col) {
+            <td>
+              @if (first) {
+                  <div class="flex items-center gap-2">
+                      <p-treetable-toggler [rowNode]="rowNode"></p-treetable-toggler>
+                      <span>{{ rowData['name'] }}</span>
+                  </div>
+              } @else {
+                  {{ rowData[col.field] }}
+              }
+            </td>
+          }
+        }
+      </tr>
+    </ng-template>
+
+  </p-treeTable>
+</section>

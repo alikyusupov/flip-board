@@ -1,0 +1,96 @@
+<section class="rates-page">
+
+  <app-filters-box [disabled]="((isRowDataLoading$ | async) || (isCardsLoading$ | async)) || false " [filterGroups]="filterGroups" (filterChangeEvent)="onFilterChangeEvent($event)"></app-filters-box>
+
+  <div class="default-padding mt-18">
+    <button routerLink="../../planning/costprice" nz-button nzType="primary">Добавить себестоимость</button>
+  </div>
+  
+  
+  <div class="cards">
+    @if (isCardsLoading$ | async) {
+      @for (skl of skeletons; track $index) {
+        <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="round"></nz-skeleton-element>
+      }
+    }
+    @else {
+        @for (card of cards$ | async; track $index) {
+          <app-rate-card [card]="card"></app-rate-card>
+        }
+    }
+
+  </div>
+
+  <div class="chart">
+    @if (isRowDataLoading$ | async) {
+      <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="round"></nz-skeleton-element>
+    }
+    @else {
+    <apx-chart 
+      [series]="chart().series" 
+      [chart]="chart().chart" 
+      [dataLabels]="chart().dataLabels"
+      [plotOptions]="chart().plotOptions" 
+      [yaxis]="chart().yaxis" 
+      [fill]="chart().fill" 
+      [stroke]="chart().stroke"
+      [xaxis]="chart().xaxis"
+    ></apx-chart>
+    }
+  </div>
+
+  <div style="padding-left: 18px;">
+    @if (isRowDataLoading$ | async) {
+        <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="round"></nz-skeleton-element>
+        <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="round"></nz-skeleton-element>
+    }
+    @else {
+        <nz-radio-group [(ngModel)]="radioValue" (ngModelChange)="onTableGroupingTypeChange($event)" nzButtonStyle="solid">
+          <span nz-radio-button [nzValue]="TableGroupBy.BY_DATE">По дате</span>
+          <span nz-radio-button [nzValue]="TableGroupBy.BY_PRODUCT">По товарам</span>
+        </nz-radio-group>
+    }
+  </div>
+
+
+  <div class="table">
+
+    @if (isRowDataLoading$ | async) {
+      <div class="skeleton">
+        @for (skl of skeletons; track $index) {
+          <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="square"></nz-skeleton-element>
+        }
+      </div>
+    }
+    @else {
+      <ag-grid-angular 
+        [theme]="theme"
+        [columnDefs]="
+          radioValue === TableGroupBy.BY_DATE
+            ? columnDefsByDate
+            : columnDefsProduct
+        "
+        [rowData]="
+          radioValue === TableGroupBy.BY_DATE
+            ? tableDataByDate
+            : tableDataByProduct
+        "
+        [pinnedBottomRowData]="
+          radioValue === TableGroupBy.BY_DATE
+            ? footerDataForDate
+            : footerDataForProduct
+        " 
+        [domLayout]="'autoHeight'"
+        [pagination]="true" 
+        [paginationPageSize]="10" 
+        [paginationPageSizeSelector]="[10,20,50,100]" 
+        [tooltipShowDelay]="0" 
+        [theme]="theme"
+        overlayNoRowsTemplate="Нет данных для отображения" 
+        class="ag-theme-alpine" 
+        [headerHeight]="28" 
+        style="width: 100%"
+      />
+    }
+  </div>
+</section>

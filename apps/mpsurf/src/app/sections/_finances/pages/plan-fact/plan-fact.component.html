@@ -1,0 +1,275 @@
+@let generalInfo = (planFactGeneralInfo$ | async);
+@let mappedData = (mappedData$ | async);
+@let isPlanFactGeneralInfoLoading = (isPlanFactGeneralInfoLoading$ | async);
+@let isPlanFactCardsLoading = (isPlanFactCardsLoading$ | async);
+@let planFactCards = (planFactCards$ | async);
+@let isPlanFactChartLoading = (isPlanFactChartLoading$ | async);
+@let planFactChartOptions = (planFactChartOptions$ | async);
+@let isPlanFactFulltableLoading = (isPlanFactFulltableLoading$ | async);
+
+  
+  <section class="table">
+
+    <button nz-button nzType="primary" nzSize="default" (click)="openDialog('add')">
+      <nz-icon nzType="file-add" nzTheme="outline" />
+      Добавить план
+    </button>
+
+    @if (isPlanFactListLoading$ | async) {
+      <div class="skeleton">
+        @for (skl of skeletons; track $index) {
+          <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="square"></nz-skeleton-element>
+        }
+      </div>
+    }
+    @else {
+       <ag-grid-angular
+        #agGrid
+        (gridReady)="onGridReady($event)"
+        [columnDefs]="columnDefs"
+        [defaultColDef]="defaultColDef"
+        [gridOptions]="gridOptionsPlanFact"
+        [pagination]="true"
+        [paginationPageSize]="20"
+        [rowData]="planFactList$ | async"
+        [tooltipShowDelay]="0"
+        [domLayout]="'autoHeight'"
+        [rowHeight]="40"
+        overlayNoRowsTemplate="Нет данных для отображения"
+        class="ag-theme-alpine"
+        [headerHeight]="28"
+        style="width: 100%" 
+      />
+    }
+  </section>
+  
+  <section class="general-info-metadata">
+    @if(generalInfo){
+      <section class="general-info-metadata">
+        <span style="font-size: 1.2rem; font-weight: 700">{{ generalInfo.plan_name }}
+          {{ generalInfo.method === 1 ? 'По кабинету' : 'По артикулу' }}
+          {{
+          generalInfo.type === 1 ? 'По сумме заказов' : 'По сумме продаж'
+          }}</span>
+      
+        <div>
+          Завершено <span>{{ generalInfo.been_days }}</span> дней из
+          <span>{{ generalInfo.days }}</span> (осталось дней -
+          <span>{{ generalInfo.left_days }}</span> )
+        </div>
+        <div>Факт без учета самовыкупов</div>
+      </section>
+    }
+  </section>
+  
+  <section class="general-info">
+  
+    <section class="general-info-table">
+  
+      @if(isPlanFactGeneralInfoLoading){
+        <div class="skeleton">
+          @for (skl of skeletons2; track $index) {
+            <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="square"></nz-skeleton-element>
+          }
+        </div>
+      }
+      @else {
+  
+        @if(mappedData?.length){
+          <table>
+            <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">План</th>
+                <th scope="col">Факт</th>
+                <th scope="col">Разница, {{currency}}</th>
+                <th scope="col">Разница, %</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of mappedData; track $index) {
+                <tr>
+                  <th scope="col">{{ row.name }}</th>
+                  <th scope="col">
+                    {{ row.plan | number: '1.0-0' | mpUnit: 'rubles' }}
+                  </th>
+                  <th scope="col">
+                    {{ row.fact | number: '1.0-0' | mpUnit: 'rubles' }}
+                  </th>
+                  <th [class.red]="+row.delta1 < 0" [class.green]="+row.delta1 >= 0" scope="col">
+                    @if(+row.delta1 >= 0){
+                      <span>+</span>
+                    }
+                    {{ row.delta1 | number: '1.0-0' | mpUnit: 'rubles' }}
+                  </th>
+                  <th [class.red]="+row.delta1 < 0" [class.green]="+row.delta1 >= 0" scope="col">
+                    @if(+row.delta1 >= 0){
+                      <span>+</span>
+                    }
+                    {{ row.delta2 | number: '1.0-0' | mpUnit: 'percent' }}
+                  </th>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      }
+  
+    </section>
+    <section class="general-info-cards">
+  
+      @if (isPlanFactCardsLoading) {
+        @for (skl of skeletons3; track $index) {
+          <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="round"></nz-skeleton-element>
+        }
+      }
+      @else {
+        @for (card of planFactCards; track $index) {
+          <app-card [card]="card"></app-card>
+        }
+      }
+  
+    </section>
+  
+  </section>
+  
+  <section class="chart">
+    @if (isPlanFactChartLoading) {
+      <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="round"></nz-skeleton-element>
+    }
+    @else {
+      @if(planFactChartOptions){
+        <apx-chart
+          [series]="planFactChartOptions.series!"
+          [chart]="planFactChartOptions.chart!"
+          [dataLabels]="planFactChartOptions.dataLabels!"
+          [plotOptions]="planFactChartOptions.plotOptions!" 
+          [yaxis]="planFactChartOptions.yaxis!"
+          [xaxis]="planFactChartOptions.xaxis!"
+          [fill]="planFactChartOptions.fill!"
+          [stroke]="planFactChartOptions.stroke!"
+        />
+      }
+    }
+  </section>
+
+  <section class="example-container">
+    @if(!isPlanFactFulltableLoading) {
+      <mat-table [dataSource]="dataSource" class="mat-table">
+        @for (column of columns; track $index) {
+          <ng-container
+            matColumnDef="{{ column.field }}"
+            [sticky]="column.field === 'type'">
+            <mat-header-cell
+              [class.w250]="column.field === 'type'"
+              [class.w100]="column.field !== 'type'"
+              *matHeaderCellDef>
+              {{
+                column.field === 'type'
+                  ? ''
+                  : column.field === 'total'
+                    ? 'Итого'
+                    : column.field === 'plan_day'
+                      ? 'План на день'
+                      : column.field
+              }}
+            </mat-header-cell>
+    
+            <mat-cell
+              *matCellDef="let row"
+              [ngStyle]="{
+                background: row[column.field],
+              }"
+              [class.border-right-black]="
+                column.field === 'total' || column.field === 'plan_day'
+              ">
+              @if(!isObject(row[column.field]) && !row.type.includes('шт')){
+                <span>
+                  {{ row[column.field] | number: '1.0-0' | mpUnit: 'rubles' }}
+                </span>
+              }
+  
+              @if(!isObject(row[column.field]) && row.type.includes('шт')){
+                <span>
+                  {{ row[column.field] | number: '1.0-0' | mpUnit: 'item' }}
+                </span>
+              }
+  
+              @if(isObject(row[column.field])){
+                <div>
+                  <span>{{
+                    row[column.field].value | number: '1.0-0' | mpUnit: 'rubles'
+                  }}</span
+                  ><br />
+                  @if (selectedUnitType === 1) {
+                    <span style="font-size: 9px">{{
+                      row[column.field].deltaInRubles
+                        | number: '1.0-0'
+                        | mpUnit: 'rubles'
+                    }}</span>
+                  }
+                  @else {
+                    <span style="font-size: 9px">{{
+                      row[column.field].deltaInPercent
+                        | number: '1.0-0'
+                        | mpUnit: 'percent'
+                    }}</span>
+                  }
+                </div>
+              }
+  
+  
+            </mat-cell>
+          </ng-container>
+        }
+  
+        <mat-header-row
+          *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
+  
+        <ng-container matColumnDef="typeHeader" sticky>
+          <mat-cell
+            style="border-right: 1px solid black"
+            class="w250"
+            *matCellDef="let group">
+            {{ group.type }}
+          </mat-cell>
+        </ng-container>
+  
+        <mat-row *matRowDef="let row; columns: displayedColumns2"></mat-row>
+      
+        <ng-container matColumnDef="groupHeader" sticky>
+          <mat-cell
+            style="border-right: 1px solid black; width: 250px; min-width: 250px"
+            *matCellDef="let group">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+                font-weight: 600;
+              ">
+              <span>{{ group.type }}</span>
+              @if(!!group?.articles?.length){
+                <span
+                  style="font-size: 1.7em; cursor: pointer"
+                  >{{ group.expanded ? '-' : '+' }}</span
+                >
+              }
+            </div>
+          </mat-cell>
+        </ng-container>
+  
+        <mat-row
+          class="subrow"
+          *matRowDef="let row; columns: dateColumns; when: isGroup"
+          (click)="groupHeaderClick(row)">
+        </mat-row>
+      </mat-table>
+    }
+  </section>
+  
+  
+  
+
+

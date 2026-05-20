@@ -1,0 +1,49 @@
+<app-filters-box [disabled]="((isTableLoading$ | async) || (isCardsLoading$ | async)) || false " [filterGroups]="filterGroups" (filterChangeEvent)="onFilterChangeEvent($event)"></app-filters-box>
+
+<section class="cards">
+
+  @if (isCardsLoading$ | async) {
+    @for (skl of cardSkeletons; track $index) {
+      <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="round"></nz-skeleton-element>
+    }
+  }
+  @else {
+    @for (card of cards$ | async; track $index) {
+      <app-card [card]="card"></app-card>
+    }
+  }
+
+</section>
+
+<section class="table">
+
+  @if (isTableLoading$ | async) {
+    <div class="skeleton">
+      @for (skl of skeletons; track $index) {
+      <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="square"></nz-skeleton-element>
+      }
+    </div>
+  }
+  @else {
+    <ag-grid-angular
+      #agGrid
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      [gridOptions]="gridOptions"
+      [pagination]="true"
+      [paginationPageSize]="20"
+      [rowData]="rowData"
+      [tooltipShowDelay]="0"
+      [domLayout]="'autoHeight'"
+      [rowHeight]="30"
+      [pinnedBottomRowData]="[]"
+      [tooltipShowDelay]="0" 
+      [theme]="theme"
+      overlayNoRowsTemplate="Нет данных для отображения"
+      class="ag-theme-alpine"
+      [headerHeight]="28"
+      style="width: 100%">
+    </ag-grid-angular>
+  }
+
+</section>

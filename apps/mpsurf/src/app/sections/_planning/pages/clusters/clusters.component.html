@@ -1,0 +1,31 @@
+<app-filters-box [disabled]="(isTableLoading$ | async) || false" [filterGroups]="filterGroups" (filterChangeEvent)="onFilterChangeEvent($event)"></app-filters-box>
+
+<section class="table">
+
+  @if(isTableLoading$ | async){
+    <div class="skeleton">
+      @for (skl of skeletons; track $index) {
+        <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="square"></nz-skeleton-element>
+      }
+    </div>
+  }
+  @else {
+    <ag-grid-angular
+      style="width: 100%;" 
+      class="ag-theme-alpine"
+      [defaultColDef]="defaultColDefs"
+      [columnDefs]="columnDefs"
+      [rowData]="rowData"
+      [pagination]="true"
+      [paginationPageSize]="20"
+      [domLayout]="'autoHeight'"
+      [enableCellTextSelection]="true"
+      [rowHeight]="30"
+      [tooltipShowDelay]="0" 
+      [theme]="theme"
+      overlayNoRowsTemplate="Нет данных для отображения"
+    >
+    </ag-grid-angular>
+  }
+
+</section>

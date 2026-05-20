@@ -1,0 +1,96 @@
+import { ColDef } from 'ag-grid-community';
+
+export const FIN_OPERATION_COLUMN_DEFS: ColDef[] = [
+  {
+    field: 'selection',
+    headerName: '',
+    headerCheckboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
+    filter: false,
+    width: 80,
+    checkboxSelection: true,
+  },
+  {
+    headerName: 'Дата оплаты (для ДДС)',
+    field: 'date_payment',
+    width: 150,
+    filter: 'agDateColumnFilter',
+    flex: 0,
+    suppressSizeToFit: true,
+  },
+  {
+    headerName: 'Дата начисления (для ОПиУ)',
+    field: 'date_accrual',
+    width: 170,
+    filter: 'agDateColumnFilter',
+    suppressSizeToFit: true,
+    flex: 0,
+  },
+  {
+    headerName: 'Дата добавления',
+    field: 'created_at',
+    width: 170,
+    filter: 'agDateColumnFilter',
+    suppressSizeToFit: true,
+    flex: 0,
+  },
+  {
+    headerName: 'Счет',
+    field: 'account_id',
+    width: 150,
+    filter: 'agTextColumnFilter',
+  },
+  {
+    headerName: 'Тип операции',
+    field: 'type_operation_title',
+    width: 180,
+    filter: 'agTextColumnFilter',
+  },
+  {
+    headerName: 'Артикул',
+    field: 'product_code',
+    width: 180,
+    filter: 'agTextColumnFilter',
+  },
+  {
+    headerName: 'Контрагент',
+    field: 'partner_id',
+    width: 180,
+    filter: 'agTextColumnFilter',
+  },
+  {
+    headerName: 'Статья',
+    field: 'name_item',
+    width: 180,
+    filter: 'agTextColumnFilter',
+  },
+  {
+    headerName: 'Сумма',
+    field: 'amount',
+    width: 180,
+  },
+  {
+    headerName: 'Кабинет',
+    field: 'shop_name',
+    width: 180,
+  },
+  {
+    headerName: 'Комментарий',
+    field: 'description',
+    width: 200,
+    filter: 'agTextColumnFilter',
+  },
+  {
+    headerName: 'Действия',
+    headerClass: 'header-no-filter',
+    icons: {
+      sortAscending: '<i class="fa fa-sort-alpha-up"/>',
+      sortDescending: '<i class="fa fa-sort-alpha-down"/>',
+    },
+    field: '',
+    sortable: false,
+    filter: false,
+    // cellRenderer: BtnCellRendererFinoperationComponent,
+    width: 150,
+  },
+];

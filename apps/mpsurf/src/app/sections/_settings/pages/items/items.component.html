@@ -1,0 +1,14 @@
+<section class="table">
+
+  @if(isGridLoading$ | async){
+    <div class="skeleton">
+      @for (skl of skeletons; track $index) {
+        <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="square"></nz-skeleton-element>
+      }
+    </div>
+  }
+  @else {
+    <p-tree [value]="files()"/>
+  }
+
+</section>

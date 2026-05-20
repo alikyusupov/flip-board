@@ -1,0 +1,29 @@
+@if(images()) {
+
+  <div class="carousel-container">
+
+    @for (image of images(); track $index) {
+      <div [style.overflow]="'hidden'">
+        <img
+          [src]="image.imageSrc"
+          [alt]="image.imageAlt"
+          [ngClass]="{ 'image-active': selectedIndex === $index }"
+        />
+      </div>
+    }
+
+    @if(indicators()){
+      <div class="carousel-dot-container">
+        @for (dot of images(); track $index) {
+          <span
+            class="dot"
+            [ngClass]="{ active: selectedIndex === $index }"
+            ((click))="selectImage($index)"
+          ></span>
+        }
+      </div>
+    }
+  
+  </div>
+
+}

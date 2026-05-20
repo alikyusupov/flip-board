@@ -1,0 +1,95 @@
+<section class="modal">
+
+  <div class="header">  
+  </div>
+
+  <div class="body">
+
+    @if(upsertPlanFormGroup){
+      <form [formGroup]="upsertPlanFormGroup">
+  
+        <nz-form-item>
+          <nz-form-label nzRequired>Название плана</nz-form-label>
+          <nz-form-control nzErrorTip="Введите название">
+            <input nz-input formControlName="plan_name" />
+          </nz-form-control>
+        </nz-form-item>
+  
+        <nz-form-item>
+          <nz-form-label>Месяц планирования</nz-form-label>
+          <nz-form-control nzErrorTip="Выберите месяц">
+            <nz-date-picker [nzAllowClear]="false" nzMode="month" formControlName="period" />
+          </nz-form-control>
+        </nz-form-item>
+  
+        <nz-form-item>
+          <nz-form-label>Способ планироования</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Выберите способ">
+            <nz-select formControlName="type"  nzPlaceHolder="Выберите способ">
+              @for (type of TYPES; track $index) {
+                <nz-option [nzLabel]="type.label" [nzValue]="type.value"></nz-option>
+              }
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+  
+        <nz-form-item>
+          <nz-form-label>Метод планирования</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Выберите метод">
+            <nz-select formControlName="method"  nzPlaceHolder="Выберите метод">
+              @for (method of METHODS; track $index) {
+                <nz-option [nzLabel]="method.label" [nzValue]="method.value"></nz-option>
+              }
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-label nzRequired>Цель в р. (итоговая сумма из плана)</nz-form-label>
+          <nz-form-control nzErrorTip="Введите значение" >
+            <nz-input-number [nzDisabled]="data.mode === 'edit'" style="width: 160px;" formControlName="goal_rub" nzPlaceHolder="Введите значение" nzMin="0" nzStep="0.1"/>
+          </nz-form-control>
+        </nz-form-item>
+
+        @if(this.data.mode === 'edit' && (planfact$ | async)?.articles?.length) {
+
+          <div>
+            <ag-grid-angular
+              (gridReady)="onGridReady($event)"
+              (cellValueChanged)="onCellValueChanged($event)"
+              (selectionChanged)="onSelectionChanged($event)"
+              (firstDataRendered)="onFirstDataRendered($event)"
+              [columnDefs]="columnDefs"
+              [defaultColDef]="defaultColDef"
+              [enableRangeSelection]="true"
+              [suppressRowClickSelection]="true"
+              [gridOptions]="gridOptions"
+              [pagination]="true"
+              [paginationPageSize]="10"
+              [paginationPageSizeSelector]="[5, 10, 15]"
+              [domLayout]="'autoHeight'"
+              [rowData]="(planfact$ | async)?.articles"
+              [rowDragManaged]="true"
+              [rowHeight]="30"
+              overlayNoRowsTemplate="Нет данных для отображения"
+              class="ag-theme-alpine"
+              rowSelection="multiple"
+              style="width: 100%" />
+          </div>
+
+        }
+  
+  
+      </form>
+    }
+
+
+  </div>
+
+  <div class="footer">
+    <button (click)="upsertPlanFact()" nz-button [disabled]="upsertPlanFormGroup?.invalid" nzType="primary">Сохранить</button>
+  </div>
+
+</section>
+
+

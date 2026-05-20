@@ -1,0 +1,68 @@
+<section class="modal">
+  <div class="header">
+    <h3>Налог</h3>
+    <h5>Для изменения "Налог" необходимо внести новое значение в поле ниже
+        При первом добавлении API-ключа автозагрузка данных за последний месяц
+    </h5>
+  </div>
+  <div class="body">
+
+    <form [formGroup]="taxDialogForm">
+
+      <nz-form-item>
+        <nz-form-label nzFor="taxPeriod" nzRequired>Месяц корректировки</nz-form-label>
+        <nz-form-control nzErrorTip="Введите значение">
+          <nz-date-picker style="width: 200px;" nzMode="month" formControlName="taxPeriod" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label nzFor="taxType" nzRequired>Тип налога</nz-form-label>
+        <nz-select id="taxType" formControlName="taxType" style="width: 300px;">
+          @for (tax of taxes; track $index) {
+            <nz-option [nzLabel]="tax.label" [nzValue]="tax.value"></nz-option>
+          }
+        </nz-select>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label nzFor="taxValue" nzRequired>Налог, %</nz-form-label>
+        <nz-form-control nzErrorTip="Введите значение">
+          <nz-input-number id="taxValue" formControlName="taxValue" nzMin="0" nzMax="100" nzStep="0.1"/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label nzFor="taxNds" nzRequired>НДС, %</nz-form-label>
+        <nz-form-control nzErrorTip="Введите значение">
+          <nz-input-number id="taxNds" formControlName="taxNds" nzMin="0" nzMax="100" nzStep="0.1"/>
+        </nz-form-control>
+      </nz-form-item>
+
+      <div>
+        <ag-grid-angular
+          (gridReady)="onGridReady($event)"
+          [gridOptions]="gridOptions"
+          [columnDefs]="taxColDef"
+          [defaultColDef]="defaultColDef"
+          [suppressRowClickSelection]="true"
+          [pagination]="true"
+          [paginationPageSize]="30"
+          [domLayout]="'autoHeight'"
+          [rowData]="taxList$ | async"
+          [rowDragManaged]="true"
+          [rowHeight]="30"
+          overlayNoRowsTemplate="Нет данных для отображения"
+          class="ag-theme-alpine"
+          rowSelection="multiple"
+          style="width: 100%; margin-top: 12px;" 
+        />
+      </div>
+
+    </form>
+
+  </div>
+  <div class="footer">
+    <button nz-button [disabled]="taxDialogForm.invalid" nzType="primary" (click)="submit()">Сохранить</button>
+  </div>
+</section>

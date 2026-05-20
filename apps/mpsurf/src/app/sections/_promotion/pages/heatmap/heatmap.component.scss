@@ -1,0 +1,25 @@
+:host {
+  ::ng-deep .chart {
+  
+    .atn-skeleton,
+    .ant-skeleton-element {
+      width: 100% !important;
+    }
+  
+    .ant-skeleton-button {
+      width: 100% !important;
+      height: 480px;
+    }
+  }
+}
+
+.wrapper {
+  display: grid;
+
+  grid-gap: 12px;
+
+  grid-template-columns: repeat(auto-fit, minmax(750px, 1fr));
+
+  padding: 12px;
+
+}

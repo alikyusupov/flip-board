@@ -1,0 +1,102 @@
+:host {
+  width: 100%;
+
+  ::ng-deep .table {
+    .atn-skeleton, .ant-skeleton-element {
+      width: 100% !important;
+    }
+    .ant-skeleton-button {
+      width: 100% !important;
+      height: 40px;
+    }
+  }
+
+  ::ng-deep .general-info {
+    .atn-skeleton, .ant-skeleton-element {
+      width: 100% !important;
+    }
+    .ant-skeleton-button {
+      width: 100% !important;
+      height: 30px;
+    }
+  }
+
+}
+
+
+.table {
+  padding: 12px;
+  .skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+.general-info-metadata {
+  padding: 12px;
+}
+
+.general-info {
+
+  padding: 12px;
+
+  display: grid; 
+  grid-template-columns: 1fr 1fr; 
+  column-gap: 12px;
+
+}
+
+.general-info-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  gap: 18px;
+}
+
+.general-info-table table {
+  height: 100%;
+  width: 100%;
+  margin-bottom: 1rem;
+  color: #495057;
+  vertical-align: top;
+  border-color: #e9ecef
+}
+
+.example-container {
+  max-height: 600px;
+  width: 100%;
+  overflow: auto;
+}
+
+.w250 {
+  width: 250px;
+  min-width: 250px;
+}
+
+.w100 {
+  width: 100px;
+  min-width: 100px;
+}
+
+mat-cell:not(:first-child) {
+  width: 100px;
+  min-width: 100px;
+}
+
+mat-row{
+  height: 30px;
+  min-height: 30px;
+}
+
+.subrow {
+  font-weight: 600;
+}
+
+
+.red {
+  color: #750000;
+}
+
+.green {
+  color: #165108
+}

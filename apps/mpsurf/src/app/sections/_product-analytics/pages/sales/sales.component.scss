@@ -1,0 +1,46 @@
+:host {
+  width: 100%;
+
+  ::ng-deep .chart {
+    .atn-skeleton, .ant-skeleton-element {
+      width: 100% !important;
+    }
+    .ant-skeleton-button {
+      width: 100% !important;
+      height: 480px;
+    }
+  }
+
+  ::ng-deep .table {
+    .atn-skeleton, .ant-skeleton-element {
+      width: 100% !important;
+    }
+    .ant-skeleton-button {
+      width: 100% !important;
+      height: 40px;
+    }
+  }
+
+}
+
+.chart {
+  padding: 12px;
+}
+
+.table {
+  padding: 12px;
+  .skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+.axes {
+  block-size: 18.75rem;
+}
+
+
+nz-select {
+  width: 300px;
+}
