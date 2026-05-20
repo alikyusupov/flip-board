@@ -22,7 +22,7 @@ export function TokeniserInterceptor(req: HttpRequest<unknown>, next: HttpHandle
   }
 
 
-  if (req.method === 'GET') {
+  if (req.method === 'GET' || req.method === 'DELETE') {
 
     const params = req.params
     .append('token', authToken)

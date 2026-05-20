@@ -8,7 +8,7 @@ import { ACCOUNTS, GRID, PARTNERS } from "../pages/dds/dds.mock";
 import { IDDSAccount, IDDSGridData, IDDSPartner } from "../pages/dds/dds.model";
 import { FIN_OPERATIONS } from "../pages/operations/operations.mock";
 import { IFinOperation } from "../pages/operations/operations.model";
-import { PLAN_FACT_BY_ID, PLAN_FACT_CARDS, PLAN_FACT_CHART, PLAN_FACT_FULLTABLE, PLAN_FACT_GENERAL_INFO, PLAN_FACT_LIST, UPSERT_PLAN_FACT_RESPONSE_MOCK } from "../pages/plan-fact/plan-fact.mock";
+import { CLONE_PLAN_FACT_RESPONSE_MOCK, DELETE_PLAN_FACT_RESPONSE_MOCK, PLAN_FACT_BY_ID, PLAN_FACT_CARDS, PLAN_FACT_CHART, PLAN_FACT_FULLTABLE, PLAN_FACT_GENERAL_INFO, PLAN_FACT_LIST, UPSERT_PLAN_FACT_RESPONSE_MOCK } from "../pages/plan-fact/plan-fact.mock";
 import { IFullTableItem, IPlanFactById, IPlanFactChartItem, IPlanFactGeneralInfo, IPlanFactItem } from "../pages/plan-fact/plan-fact.model";
 import { PNL_GRID_DATA } from "../pages/pnl/pnl.mock";
 import { IPNLGridData } from "../pages/pnl/pnl.model";
@@ -73,5 +73,13 @@ export class FinancesMockService implements IFinancesService {
   upsertPlanfact(dto: IApiConfigDto): Observable<IBaseResponseData>{
     return of(UPSERT_PLAN_FACT_RESPONSE_MOCK).pipe(delay(1200))
   }
+
+  clonePlanfact(dto: IApiConfigDto): Observable<IBaseResponseData>{
+    return of(CLONE_PLAN_FACT_RESPONSE_MOCK).pipe(delay(1200))
+  };
+
+  deletePlanfact(dto: IApiConfigDto): Observable<IBaseResponseData>{
+    return of(DELETE_PLAN_FACT_RESPONSE_MOCK).pipe(delay(1200))
+  };
     
 }

@@ -17,7 +17,7 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { filter, map } from 'rxjs';
 
 import { PlanFactUpsertDialogComponent } from '../../dialogs/plan-fact-upsert-dialog/plan-fact-upsert-dialog.component';
-import { LoadChart, LoadFullTable, LoadGeneralInfo, LoadPlanCards, LoadPlanFactById, LoadPlanFacts } from './plan-fact.actions';
+import { ClonePlanFact, DeletePlanFact, LoadChart, LoadFullTable, LoadGeneralInfo, LoadPlanCards, LoadPlanFactById, LoadPlanFacts } from './plan-fact.actions';
 import { PLAN_FACT_COLUMN_DEFS } from './plan-fact.definition';
 import { getChartOptions, getDateKeys, mapToRows } from './plan-fact.func';
 import { IFullTableItem, IFullTableItemArticle } from './plan-fact.model';
@@ -198,11 +198,17 @@ export class PlanFactComponent implements OnInit {
   }
 
   onCloneClick(id: number): void {
-    this._store.dispatch(new LoadPlanFactById({} as IApiConfigDto))
+    this._store.dispatch(new ClonePlanFact({
+      method: 'GET',
+      endpoint: `plan-fact/${id}`
+    }))
   }
 
   onDeleteClick(id: number): void {
-    this._store.dispatch(new LoadPlanFactById({} as IApiConfigDto))
+    this._store.dispatch(new DeletePlanFact({
+      method: 'DELETE',
+      endpoint: `plan-fact/${id}`
+    }))
   }
 
   groupHeaderClick(row: IFullTableItem) {

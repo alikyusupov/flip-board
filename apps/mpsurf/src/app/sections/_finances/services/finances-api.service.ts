@@ -71,5 +71,13 @@ export class FinancesService implements IFinancesService {
   upsertPlanfact(dto: IApiConfigDto): Observable<IBaseResponseData>{
     return this._API.makePostRequest(dto)
   }
+
+  clonePlanfact(dto: IApiConfigDto): Observable<IBaseResponseData>{
+    return this._API.makePostRequest(dto)
+  };
+  
+  deletePlanfact(dto: IApiConfigDto): Observable<IBaseResponseData>{
+    return this._API.makeDeleteRequest(dto)
+  };
     
 }

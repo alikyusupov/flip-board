@@ -2358,6 +2358,18 @@ export const PLAN_FACT_BY_ID: IPlanFactById = {
 
 export const UPSERT_PLAN_FACT_RESPONSE_MOCK: IBaseResponseData =  
   {
-    "is_error":0,
-    "msg":"Успешно сохранено"
+    "is_error": 0,
+    "msg": "Успешно сохранено"
+  }
+
+export const DELETE_PLAN_FACT_RESPONSE_MOCK: IBaseResponseData =  
+  {
+    "is_error": 0,
+    "msg": "Объект удален"
+  }
+
+export const CLONE_PLAN_FACT_RESPONSE_MOCK: IBaseResponseData =  
+  {
+    "is_error": 0,
+    "msg": "Успешно сохранено"
   }

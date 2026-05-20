@@ -34,4 +34,8 @@ export interface IFinancesService {
 
   upsertPlanfact: (dto: IApiConfigDto) => Observable<IBaseResponseData>,
 
+  clonePlanfact: (dto: IApiConfigDto) => Observable<IBaseResponseData>,
+
+  deletePlanfact: (dto: IApiConfigDto) => Observable<IBaseResponseData>,
+
 }

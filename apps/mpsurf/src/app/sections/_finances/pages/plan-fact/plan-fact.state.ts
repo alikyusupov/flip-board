@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
 import { inject, Injectable } from "@angular/core";
-import { ApiRequestStateType, ICardWidget } from "@models";
+import { ApiRequestStateType, IApiConfigDto, ICardWidget } from "@models";
 import { Action, Selector, State, StateContext } from "@ngxs/store";
 import { NzNotificationService } from "ng-zorro-antd/notification";
+import { switchMap } from "rxjs";
 
 import { FINANCES_SERVICE_TOKEN } from "../../tokens";
-import { LoadChart, LoadFullTable, LoadGeneralInfo, LoadPlanCards, LoadPlanFactById, LoadPlanFacts, UpsertPlanFact } from "./plan-fact.actions";
+import { ClonePlanFact, DeletePlanFact, LoadChart, LoadFullTable, LoadGeneralInfo, LoadPlanCards, LoadPlanFactById, LoadPlanFacts, UpsertPlanFact } from "./plan-fact.actions";
 import { IFullTableItem, IPlanFactById, IPlanFactChartItem, IPlanFactGeneralInfo, IPlanFactItem } from "./plan-fact.model";
 
 export interface FinancesPlanFactStateModel {
@@ -328,6 +329,74 @@ export class FinancesPlanFactState {
         error() {
 
            self.notification.create('error', 'Статус:', 'Ошибка создания плана')
+          
+        }
+      })
+  }
+
+  @Action(ClonePlanFact)
+  clonePlanFact(ctx: StateContext<FinancesPlanFactStateModel>, {dto}: ClonePlanFact) {
+
+    const self = this;
+   
+    this.financesService.loadPlanFactByid(dto)
+      .pipe(switchMap(plan => {
+
+        const cloneDto: IApiConfigDto = {
+          method: 'POST',
+          endpoint: 'plan-fact',
+          params: plan as unknown as Record<string, unknown>
+        }
+
+        return this.financesService.clonePlanfact({...cloneDto})
+      }))
+      .subscribe({
+        next(res) {
+
+          if(res.is_error){
+            self.notification.create('error', 'Статус:', res.msg);
+
+          } else {
+            self.notification.create('success', 'Статус:', res.msg);
+            ctx.dispatch(new LoadPlanFacts({
+              method: 'GET',
+              endpoint: 'plan-fact',
+            }))
+          } 
+
+        },
+        error() {
+
+           self.notification.create('error', 'Статус:', 'Ошибка создания плана')
+          
+        }
+      })
+  }
+
+  @Action(DeletePlanFact)
+  deletePlanFact(ctx: StateContext<FinancesPlanFactStateModel>, {dto}: DeletePlanFact) {
+
+    const self = this;
+   
+    this.financesService.deletePlanfact(dto)
+      .subscribe({
+        next(res) {
+
+          if(res.is_error){
+            self.notification.create('error', 'Статус:', res.msg);
+
+          } else {
+            self.notification.create('success', 'Статус:', res.msg);
+            ctx.dispatch(new LoadPlanFacts({
+              method: 'GET',
+              endpoint: 'plan-fact',
+            }))
+          } 
+
+        },
+        error() {
+
+           self.notification.create('error', 'Статус:', 'Ошибка удаления плана')
           
         }
       })

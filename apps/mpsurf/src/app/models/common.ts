@@ -71,7 +71,7 @@ export interface IMainService {
 }
 
 export interface IApiConfigDto{
-  method: 'GET' | 'POST' | 'PATCH',
+  method: 'GET' | 'POST' | 'PATCH' | 'DELETE',
   host?: string,
   endpoint?: string,
   params?: Record<string, unknown>,

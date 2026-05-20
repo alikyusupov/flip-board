@@ -34,3 +34,13 @@ export class UpsertPlanFact {
   static readonly type = '[FinancePLanFactState] upsert plan fact';
   constructor(public dto: IApiConfigDto){}
 }
+
+export class ClonePlanFact {
+  static readonly type = '[FinancePLanFactState] clone plan fact';
+  constructor(public dto: IApiConfigDto){}
+}
+
+export class DeletePlanFact {
+  static readonly type = '[FinancePLanFactState] delete plan fact';
+  constructor(public dto: IApiConfigDto){}
+}

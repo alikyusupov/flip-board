@@ -52,4 +52,27 @@ export class ApiService {
     return this._http.post<T>(url, payload);
   }
 
+  makeDeleteRequest<T>(dto: IApiConfigDto){
+
+    const url = `${dto.host || this._API}/${dto.endpoint}`;
+    let httpParams = new HttpParams();
+
+    if(dto.params) {
+       Object.entries(dto.params).forEach(([key, value]) => httpParams = httpParams.set(key, value as string ));
+    }
+
+    const paramsShopId = dto?.params?.['shop_id'] as number;
+
+    if(paramsShopId) {
+      httpParams = httpParams.set('shop_id', paramsShopId);
+    }
+    else {
+      const shopStorage = sessionStorage.getItem('shop');
+      const shopId = shopStorage ? JSON.parse(shopStorage).id : 0;
+      httpParams = httpParams.set('shop_id', shopId);
+    }
+
+    return this._http.delete<T>(url, { params: httpParams });
+  }
+
 }
