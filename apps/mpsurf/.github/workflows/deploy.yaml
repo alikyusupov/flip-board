@@ -34,5 +34,5 @@ jobs:
           password: ${{ secrets.ftp_password_front2_test }}
           protocol: ftp
           port: 21
-          local-dir: ./dist/mpsurf2/browser
+          local-dir: ./dist/mpsurf2/browser/
           server-dir: ./
