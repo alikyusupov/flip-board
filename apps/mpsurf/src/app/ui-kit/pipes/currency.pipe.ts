@@ -48,6 +48,11 @@ export class MpCurrencyPipe implements PipeTransform {
           description: `Доллар США`,
           icon: '$'
         }
+      case 'CNY':
+        return {
+          description: `Китайский юань`,
+          icon: '¥'
+        }
       default:
         return  {
           description: `Российский рубль`,

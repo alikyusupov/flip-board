@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+ 
 import { Dialog } from '@angular/cdk/dialog';
 import { AsyncPipe, DecimalPipe, NgStyle } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { IApiConfigDto } from '@models';
 import { Store } from '@ngxs/store';
 import { CardComponent } from '@ui-kit/card/card.component';
 import { UnitPipe } from '@ui-kit/pipes/unit.pipe';
@@ -13,6 +12,7 @@ import { ColDef,GridApi,GridOptions,GridReadyEvent,themeAlpine } from 'ag-grid-c
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { filter, map } from 'rxjs';
 
@@ -27,7 +27,7 @@ export type DialogType = 'add' | 'delete' | 'edit'
 
 @Component({
   selector: 'app-plan-fact',
-  imports: [AsyncPipe, AgGridAngular, NzSkeletonModule, DecimalPipe, UnitPipe, CardComponent, NgApexchartsModule, MatTableModule, NgStyle, NzButtonModule, NzIconModule],
+  imports: [AsyncPipe, AgGridAngular, NzSkeletonModule, DecimalPipe, UnitPipe, CardComponent, NgApexchartsModule, MatTableModule, NgStyle, NzButtonModule, NzIconModule, NzModalModule],
   templateUrl: './plan-fact.component.html',
   styleUrl: './plan-fact.component.scss'
 })
@@ -36,6 +36,7 @@ export class PlanFactComponent implements OnInit {
   private readonly _destroyRef = inject(DestroyRef);
   private readonly _store = inject(Store);
   private readonly dialog = inject(Dialog);
+  private readonly modalService = inject(NzModalService);
 
   public dataSource = new MatTableDataSource<IFullTableItem>([]);
 
@@ -205,10 +206,24 @@ export class PlanFactComponent implements OnInit {
   }
 
   onDeleteClick(id: number): void {
-    this._store.dispatch(new DeletePlanFact({
-      method: 'DELETE',
-      endpoint: `plan-fact/${id}`
-    }))
+
+    this.modalService.confirm({
+      nzTitle: 'Удаление плана',
+      nzContent: '<b style="color: red;">Подтвердите или отмените действие</b>',
+      nzOkText: 'Да',
+      nzOkType: 'primary',
+      nzOkDanger: true,
+      nzOnOk: () => {
+        this._store.dispatch(new DeletePlanFact({
+          method: 'DELETE',
+          endpoint: `plan-fact/${id}`
+        }))
+      },
+      nzCancelText: 'Нет',
+      nzOnCancel: () => this.modalService.closeAll()
+    });
+  
+
   }
 
   groupHeaderClick(row: IFullTableItem) {
