@@ -1,7 +1,7 @@
  
 import { Dialog } from '@angular/cdk/dialog';
 import { AsyncPipe, DecimalPipe, NgStyle } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
+import { Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Store } from '@ngxs/store';
@@ -17,7 +17,7 @@ import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { filter, map } from 'rxjs';
 
 import { PlanFactUpsertDialogComponent } from '../../dialogs/plan-fact-upsert-dialog/plan-fact-upsert-dialog.component';
-import { ClonePlanFact, DeletePlanFact, LoadChart, LoadFullTable, LoadGeneralInfo, LoadPlanCards, LoadPlanFactById, LoadPlanFacts } from './plan-fact.actions';
+import { ClonePlanFact, DeletePlanFact, LoadChart, LoadFullTable, LoadGeneralInfo, LoadPlanCards, LoadPlanFactById, LoadPlanFacts, ResetPlanFact } from './plan-fact.actions';
 import { PLAN_FACT_COLUMN_DEFS } from './plan-fact.definition';
 import { getChartOptions, getDateKeys, mapToRows } from './plan-fact.func';
 import { IFullTableItem, IFullTableItemArticle } from './plan-fact.model';
@@ -31,7 +31,7 @@ export type DialogType = 'add' | 'delete' | 'edit'
   templateUrl: './plan-fact.component.html',
   styleUrl: './plan-fact.component.scss'
 })
-export class PlanFactComponent implements OnInit {
+export class PlanFactComponent implements OnInit, OnDestroy {
 
   private readonly _destroyRef = inject(DestroyRef);
   private readonly _store = inject(Store);
@@ -68,7 +68,7 @@ export class PlanFactComponent implements OnInit {
   planFactChartOptions$ = this._store.select(FinancesPlanFactState.planFactChart)
     .pipe(
       takeUntilDestroyed(this._destroyRef), 
-      filter(chart => !!chart),
+      filter(chart => chart.length > 0),
       map(chart => getChartOptions(chart, 'rub'))
     )
   
@@ -100,11 +100,12 @@ export class PlanFactComponent implements OnInit {
 
   columnDefs = PLAN_FACT_COLUMN_DEFS;
   
-  skeletons = Array.from({length: 10});
+  skeletons10 = Array.from({length: 10});
 
-  skeletons2 = Array.from({length: 3});
+  skeletons3 = Array.from({length: 3});
 
-  skeletons3 = Array.from({length: 2});
+  skeletons2 = Array.from({length: 2});
+
 
   theme = themeAlpine
     .withParams(
@@ -205,11 +206,11 @@ export class PlanFactComponent implements OnInit {
     }))
   }
 
-  onDeleteClick(id: number): void {
+  onDeleteClick(id: number, plan_name: string): void {
 
     this.modalService.confirm({
-      nzTitle: 'Удаление плана',
-      nzContent: '<b style="color: red;">Подтвердите или отмените действие</b>',
+      nzTitle: `Удаление плана ${plan_name}`,
+      nzContent: `<b style="color: red;">Вы действительно хотите удалить план?</b>`,
       nzOkText: 'Да',
       nzOkType: 'primary',
       nzOkDanger: true,
@@ -265,5 +266,9 @@ export class PlanFactComponent implements OnInit {
       },
     });
   
+  }
+
+  ngOnDestroy(): void {
+    this._store.dispatch(new ResetPlanFact())
   }
 }

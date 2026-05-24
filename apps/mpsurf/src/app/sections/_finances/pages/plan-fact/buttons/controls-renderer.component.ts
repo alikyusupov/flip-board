@@ -9,6 +9,11 @@ import { IPlanFactItem } from '../plan-fact.model';
 @Component({
   selector: 'app-plan-fact-controls-renderer',
   imports: [NzIconModule],
+  styles: [`
+    button {
+      cursor: pointer
+    }
+  `],
   template: `
     <div style="display: flex; align-items: center">
       <button
@@ -37,7 +42,9 @@ export class PlanFactControlsRendererComponent
 {
   id: number | null = null;
 
-  start = ''
+  start = '';
+
+  plan_name = '';
 
   componentParent!: PlanFactComponent;
 
@@ -45,6 +52,7 @@ export class PlanFactControlsRendererComponent
     this.componentParent = params.context.componentParent;
     this.start = params.data?.start_date as string;
     this.id = params.data?.id as number;
+    this.plan_name = params.data?.plan_name as string;
   }
 
   refresh(): boolean {
@@ -64,6 +72,6 @@ export class PlanFactControlsRendererComponent
   }
 
   onDeleteClick(): void {
-    this.componentParent.onDeleteClick(this.id!);
+    this.componentParent.onDeleteClick(this.id!, this.plan_name);
   }
 }

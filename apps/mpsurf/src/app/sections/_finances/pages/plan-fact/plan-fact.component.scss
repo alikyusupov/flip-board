@@ -11,7 +11,35 @@
     }
   }
 
-  ::ng-deep .general-info {
+  ::ng-deep .full-table {
+    .atn-skeleton, .ant-skeleton-element {
+      width: 100% !important;
+    }
+    .ant-skeleton-button {
+      width: 100% !important;
+      height: 40px;
+    }
+  }
+
+  ::ng-deep .general-info-metadata {
+    .atn-skeleton, .ant-skeleton-element {
+      width: 300px !important;
+    }
+    .ant-skeleton-button {
+      width: 300px !important;
+      height: 30px;
+    }
+  }
+
+  ::ng-deep .general-info-cards {
+
+    .ant-skeleton-button {
+      width: 300px !important;
+      height: 150px;
+    }
+  }
+
+  ::ng-deep .general-info-table {
     .atn-skeleton, .ant-skeleton-element {
       width: 100% !important;
     }
@@ -21,11 +49,24 @@
     }
   }
 
+  ::ng-deep .chart {
+    .atn-skeleton, .ant-skeleton-element {
+      width: 100% !important;
+    }
+    .ant-skeleton-button {
+      width: 100% !important;
+      height: 300px;
+    }
+  }
+
+}
+
+.page {
+  padding: 12px;
 }
 
 
-.table {
-  padding: 12px;
+.table, .general-info-metadata, .full-table {
   .skeleton {
     display: flex;
     flex-direction: column;
@@ -34,17 +75,21 @@
 }
 
 .general-info-metadata {
-  padding: 12px;
+  padding: 12px 0;
 }
 
 .general-info {
 
-  padding: 12px;
+  padding: 12px 0;
 
   display: grid; 
   grid-template-columns: 1fr 1fr; 
   column-gap: 12px;
 
+}
+
+.chart{
+  padding: 12px 0;
 }
 
 .general-info-cards {
@@ -64,7 +109,6 @@
 
 .example-container {
   max-height: 600px;
-  width: 100%;
   overflow: auto;
 }
 

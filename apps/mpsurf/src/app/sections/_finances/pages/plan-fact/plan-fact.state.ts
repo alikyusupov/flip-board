@@ -6,7 +6,7 @@ import { NzNotificationService } from "ng-zorro-antd/notification";
 import { switchMap } from "rxjs";
 
 import { FINANCES_SERVICE_TOKEN } from "../../tokens";
-import { ClonePlanFact, DeletePlanFact, LoadChart, LoadFullTable, LoadGeneralInfo, LoadPlanCards, LoadPlanFactById, LoadPlanFacts, UpsertPlanFact } from "./plan-fact.actions";
+import { ClonePlanFact, DeletePlanFact, LoadChart, LoadFullTable, LoadGeneralInfo, LoadPlanCards, LoadPlanFactById, LoadPlanFacts, ResetPlanFact, UpsertPlanFact } from "./plan-fact.actions";
 import { IFullTableItem, IPlanFactById, IPlanFactChartItem, IPlanFactGeneralInfo, IPlanFactItem } from "./plan-fact.model";
 
 export interface FinancesPlanFactStateModel {
@@ -400,5 +400,19 @@ export class FinancesPlanFactState {
           
         }
       })
+  }
+
+  @Action(ResetPlanFact)
+  resetPlanFact(ctx: StateContext<FinancesPlanFactStateModel>) {
+
+   ctx.patchState({
+    planFactList: [],
+    planFactCards: [],
+    planFactGeneralInfo: null,
+    planFactChart: [],
+    planFactFulltable: [],
+    planFactById: null,
+   })
+    
   }
 }

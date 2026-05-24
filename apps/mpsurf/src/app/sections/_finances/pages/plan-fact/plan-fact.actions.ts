@@ -44,3 +44,7 @@ export class DeletePlanFact {
   static readonly type = '[FinancePLanFactState] delete plan fact';
   constructor(public dto: IApiConfigDto){}
 }
+
+export class ResetPlanFact {
+  static readonly type = '[FinancePLanFactState] reset plan fact';
+}
