@@ -23,7 +23,7 @@
         </nz-form-item>
   
         <nz-form-item>
-          <nz-form-label>Способ планироования</nz-form-label>
+          <nz-form-label>Способ планирования</nz-form-label>
           <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Выберите способ">
             <nz-select formControlName="type"  nzPlaceHolder="Выберите способ">
               @for (type of TYPES; track $index) {
@@ -54,7 +54,7 @@
         @if(
           (this.data.mode === 'edit' && (planfact$ | async)?.articles?.length)
           || 
-          (this.data.mode === 'add' && (articles$ | async)?.length)
+          (this.data.mode === 'add' && (articles$ | async)?.length && upsertPlanFormGroup.controls['type'].value === 2)
         ) {
 
           <div>
@@ -65,7 +65,6 @@
               (firstDataRendered)="onFirstDataRendered($event)"
               [columnDefs]="columnDefs"
               [defaultColDef]="defaultColDef"
-              [enableRangeSelection]="true"
               [suppressRowClickSelection]="true"
               [gridOptions]="gridOptions"
               [pagination]="true"
