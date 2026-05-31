@@ -7,6 +7,7 @@ import { FiltersBoxComponent } from '@ui-kit/filters-box/filters-box.component';
 import { FilterBuilderService } from 'app/services/filter-builder.service';
 import { GlobalDateRangeService } from 'app/services/global-date-range.service';
 import { MainState } from 'app/states/main.state';
+import { CURRENCY } from 'app/tokens';
 import { getCurrencyIcon } from 'app/utils';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
@@ -40,6 +41,8 @@ export class PnlComponent implements OnInit {
   private readonly _destroyRef = inject(DestroyRef);
   private readonly _filterBuilder = inject(FilterBuilderService);
   private readonly _dateRangeService = inject(GlobalDateRangeService);
+  private readonly _currency = inject(CURRENCY)
+  
 
   filterGroups: IFiltersBox[][] = [];
 
@@ -102,7 +105,7 @@ export class PnlComponent implements OnInit {
         this.tree = grid.data;
         this.columns = [{field: '', header: 'Статья'}, ...grid.columns];
 
-        this.chartOptions.set(generateChartOptions(grid, getCurrencyIcon()));
+        this.chartOptions.set(generateChartOptions(grid, getCurrencyIcon(this._currency())));
 
       }
     })

@@ -259,7 +259,7 @@ export class PlanFactComponent implements OnInit, OnDestroy {
   openDialog(mode: DialogType): void {
 
     this.dialog.open(PlanFactUpsertDialogComponent, {
-      minWidth: '620px',
+      minWidth: '50vw',
       maxHeight: '620px',
       data: {
         mode: mode,

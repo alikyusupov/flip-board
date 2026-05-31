@@ -8,6 +8,7 @@ import { FiltersBoxComponent } from '@ui-kit/filters-box/filters-box.component';
 import { FilterBuilderService } from 'app/services/filter-builder.service';
 import { GlobalDateRangeService } from 'app/services/global-date-range.service';
 import { MainState } from 'app/states/main.state';
+import { CURRENCY } from 'app/tokens';
 import { getCurrencyIcon } from 'app/utils';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { environment } from 'environments/environment';
@@ -36,6 +37,7 @@ export class HeatmapComponent implements OnInit {
   private readonly _filterBuilder = inject(FilterBuilderService);
   private readonly _dateRangeService = inject(GlobalDateRangeService);
   private readonly shopId = inject(Store).selectSnapshot(MainState.selectedShop)?.id;
+  private readonly _currency = inject(CURRENCY)
 
   filterGroups: IFiltersBox[][] = [];
 
@@ -140,7 +142,7 @@ export class HeatmapComponent implements OnInit {
           this.ordersByDayOfWeekFromTo = GenerateOrdersByDayOfWeekFromTo(orders);
           this.ordersByHoursFromTo = GenerateOrdersByHoursFromTo(orders);
           this.ordersAverageCheckByDayOfWeek = GenerateOrdersAverageCheckByDayOfWeek(orders);
-          this.ordersInRubblesByDay = GenerateOrdersInRubblesByDay(orders, getCurrencyIcon());
+          this.ordersInRubblesByDay = GenerateOrdersInRubblesByDay(orders, getCurrencyIcon(this._currency()));
           this.ordersAverageReceiptByHours = GenerateOrdersAverageReceiptByHours(orders);
         }
       })

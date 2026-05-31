@@ -350,7 +350,7 @@ export class MainState{
     sessionStorage.removeItem('shop');
     sessionStorage.removeItem('shopList');
 
-    ctx.setState(defaults)
+    ctx.setState({...defaults, shops: [], selectedShop: null})
 
   }
 

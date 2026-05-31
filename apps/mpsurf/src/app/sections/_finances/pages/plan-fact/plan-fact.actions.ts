@@ -30,6 +30,10 @@ export class LoadPlanFactById {
   constructor(public dto: IApiConfigDto){}
 }
 
+export class LoadPlanFactArticles {
+  static readonly type = '[FinancePLanFactState] load articles';
+  constructor(public dto: IApiConfigDto){}
+}
 export class UpsertPlanFact {
   static readonly type = '[FinancePLanFactState] upsert plan fact';
   constructor(public dto: IApiConfigDto){}

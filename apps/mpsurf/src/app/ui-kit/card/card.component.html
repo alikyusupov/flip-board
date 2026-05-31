@@ -1,5 +1,6 @@
 <!-- eslint-disable @angular-eslint/template/eqeqeq -->
 <article class="mp_card" [style.backgroundColor]="getBgColor(card)">
+  {{currency()}}
   <section *ngIf="card?.underConstruction" class="underConstruction">
     В разработке
   </section>
@@ -21,7 +22,7 @@
             {{ field.ratioInPercents }} %
           </span>
           <span>
-            {{ field.value | number: '1.0-0' | mpUnit: field?.unit || 'rubles' }}
+            {{ field.value | number: '1.0-0' }} {{this.selectedCurrency}}
           </span>
         </section>
       </div>
@@ -46,7 +47,7 @@
     <span *ngIf="isNumber(card?.salesPercent || 0)" placement="right" ngbTooltip="ДРР по продажам"> {{ card?.salesPercent | number: '1.1-1' | mpUnit: 'percent' }}</span>
     <section class="mp_card-footer_total">
       <span *ngIf="isNumber(card?.ordersPercent || 0)" placement="right" ngbTooltip="ДРР по заказам"> {{ card?.ordersPercent | number: '1.1-1' | mpUnit: 'percent' }}</span>
-      <span *ngIf="card?.totalSum || card?.totalSum == 0">{{ card?.totalSum | number: '1.0-0' | mpUnit: 'rubles' }}</span>
+      <span *ngIf="card?.totalSum || card?.totalSum == 0">{{ card?.totalSum | number: '1.0-0'}}  {{this.selectedCurrency}}</span>
       <span *ngIf="card?.totalUnits || card?.totalUnits == 0">{{ card?.totalUnits }}</span>
       <span *ngIf="card?.diffInPercents" placement="left"  class="mp_card-footer_total_hint">
         <span>{{ (card?.diffInPercents || 0) < 0 ? '↓' : '↑' }}</span><span>{{ (card?.diffInPercents || 0) | mpUnit: 'percent' }}</span>

@@ -20,11 +20,6 @@
           <span>Магазины</span>
         </span>
 
-        <!-- <span class="span-group" routerLink="profile/users">
-          <nz-icon nzType="user" nzTheme="outline" />
-          <span>Пользователи</span>
-        </span> -->
-        
         <span class="span-group">
           <nz-icon nzType="read" nzTheme="outline" />
           <span>
@@ -39,10 +34,6 @@
       </nz-page-header-extra>
 
       <nz-page-header-extra>
-
-        <nz-space>
-          <nz-icon (click)="logout()" nzType="logout" nzTheme="outline" />
-        </nz-space>
 
         <nz-space>
           <nz-switch [formControl]="themeControl" [nzCheckedChildren]="checkedTemplate" [nzUnCheckedChildren]="unCheckedTemplate">
@@ -60,6 +51,13 @@
             <nz-option [nzLabel]="shop.name" [nzValue]="shop.id"></nz-option>
           }
         </nz-select>
+
+        <nz-space>
+          <button (click)="logout()" nz-button nzType="primary">
+            <nz-icon nzType="logout" nzTheme="outline" />
+            Выйти
+          </button>
+        </nz-space>
 
       </nz-page-header-extra>
     </nz-page-header>

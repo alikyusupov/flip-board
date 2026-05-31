@@ -3,7 +3,7 @@ import { Observable } from "rxjs";
 
 import { IDDSAccount, IDDSGridData, IDDSPartner } from "../pages/dds/dds.model";
 import { IFinOperation } from "../pages/operations/operations.model";
-import { IFullTableItem, IPlanFactById, IPlanFactChartItem, IPlanFactGeneralInfo, IPlanFactItem } from "../pages/plan-fact/plan-fact.model";
+import { IFullTableItem, IPlanFactById, IPlanFactByIdArticle, IPlanFactChartItem, IPlanFactGeneralInfo, IPlanFactItem } from "../pages/plan-fact/plan-fact.model";
 import { IPNLGridData } from "../pages/pnl/pnl.model";
 import { IReconciliationRow } from "../pages/reconciliation/reconciliation.model";
 
@@ -23,6 +23,8 @@ export interface IFinancesService {
   loadPlanFacts: (dto: IApiConfigDto) => Observable<IPlanFactItem[]>,
 
   loadPlanCards: (dto: IApiConfigDto) => Observable<ICardWidget[]>,
+
+  loadPlanFactArticles: (dto: IApiConfigDto) => Observable<IPlanFactByIdArticle[]>,
 
   loadPlanGeneralInfo: (dto: IApiConfigDto) => Observable<IPlanFactGeneralInfo>,
 

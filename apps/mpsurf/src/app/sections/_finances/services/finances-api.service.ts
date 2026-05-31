@@ -7,7 +7,7 @@ import { Observable, of } from "rxjs";
 import { IFinancesService } from "../models";
 import { IDDSAccount,IDDSGridData, IDDSPartner } from "../pages/dds/dds.model";
 import { IFinOperation } from "../pages/operations/operations.model";
-import { IFullTableItem, IPlanFactById, IPlanFactChartItem, IPlanFactGeneralInfo, IPlanFactItem } from "../pages/plan-fact/plan-fact.model";
+import { IFullTableItem, IPlanFactById, IPlanFactByIdArticle, IPlanFactChartItem, IPlanFactGeneralInfo, IPlanFactItem } from "../pages/plan-fact/plan-fact.model";
 import { IPNLGridData } from "../pages/pnl/pnl.model";
 import { IReconciliationRow } from "../pages/reconciliation/reconciliation.model";
 
@@ -39,6 +39,10 @@ export class FinancesService implements IFinancesService {
   };
 
   loadPlanFacts(dto: IApiConfigDto): Observable<IPlanFactItem[]>{
+    return this._API.makeGetRequest(dto)
+  };
+
+  loadPlanFactArticles(dto: IApiConfigDto): Observable<IPlanFactByIdArticle[]>{
     return this._API.makeGetRequest(dto)
   };
 

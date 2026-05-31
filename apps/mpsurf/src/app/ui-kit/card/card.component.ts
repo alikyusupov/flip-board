@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { ICardWidget } from '@models';
+import { CURRENCY } from 'app/tokens';
+import { getCurrencyIcon } from 'app/utils';
 
 import { UnitPipe } from '../pipes/unit.pipe';
 @Component({
@@ -10,10 +12,18 @@ import { UnitPipe } from '../pipes/unit.pipe';
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss'
 })
-export class CardComponent {
+export class CardComponent implements OnInit {
+
+   currency = inject(CURRENCY);
+
+  selectedCurrency = ''
 
   @Input() card: ICardWidget | null = null
   @Input() bgColor: string | null = null
+
+  ngOnInit(): void {
+    this.selectedCurrency = getCurrencyIcon(this.currency())
+  }
 
   getBgColor(card: ICardWidget | null): string {
     if(!this.card) return '';

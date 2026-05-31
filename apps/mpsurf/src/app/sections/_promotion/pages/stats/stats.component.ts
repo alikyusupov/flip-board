@@ -9,6 +9,7 @@ import { ColDef, themeAlpine } from 'ag-grid-community';
 import { FilterBuilderService } from 'app/services/filter-builder.service';
 import { GlobalDateRangeService } from 'app/services/global-date-range.service';
 import { MainState } from 'app/states/main.state';
+import { CURRENCY } from 'app/tokens';
 import { getCurrencyIcon } from 'app/utils';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { ApexOptions, NgApexchartsModule } from 'ng-apexcharts';
@@ -34,6 +35,7 @@ export class StatsComponent implements OnInit{
   private readonly _destroyRef = inject(DestroyRef);
   private readonly _filterBuilder = inject(FilterBuilderService);
   private readonly _dateRangeService = inject(GlobalDateRangeService);
+  private readonly _currency = inject(CURRENCY)
 
   chart$ = this._store.select(PromotionStatsState.chart).pipe(takeUntilDestroyed(this._destroyRef));
   table$ = this._store.select(PromotionStatsState.table).pipe(takeUntilDestroyed(this._destroyRef));
@@ -113,12 +115,12 @@ export class StatsComponent implements OnInit{
 
     this.chart$
       .subscribe((items => {
-        this.chartOptions.set(getChartOptions(items, getCurrencyIcon()))
+        this.chartOptions.set(getChartOptions(items, getCurrencyIcon(this._currency())))
       }))
 
     this.table$
       .subscribe((items) => {
-        const currency = getCurrencyIcon();
+        const currency = getCurrencyIcon(this._currency());
         this.columnDefs = genarateColumnDefs(false, currency);
         this.rowData = items;
         this.summaryRow = generateSummary(items);

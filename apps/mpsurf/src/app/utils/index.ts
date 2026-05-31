@@ -70,9 +70,7 @@ export function filterOptionMapper(option: FilterOptionType): IFilterOption {
   }
 }
 
-export function getCurrencyIcon(): string {
-
-  const currency = localStorage.getItem('currency') || 'RUB';
+export function getCurrencyIcon(currency = 'RUB'): string {
 
   switch (currency) {
     case 'RUB':

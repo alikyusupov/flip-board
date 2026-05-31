@@ -15,7 +15,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 
-import { UpsertPlanFact } from '../../pages/plan-fact/plan-fact.actions';
+import { LoadPlanFactArticles, UpsertPlanFact } from '../../pages/plan-fact/plan-fact.actions';
 import { DialogType } from '../../pages/plan-fact/plan-fact.component';
 import { MODAL_COLUMNS_DEFS } from '../../pages/plan-fact/plan-fact.definition';
 import { IPlanFactItem } from '../../pages/plan-fact/plan-fact.model';
@@ -53,6 +53,7 @@ export class PlanFactUpsertDialogComponent implements OnInit {
   upsertPlanFormGroup?: FormGroup | null = null;
 
   planfact$ = this._store.select(FinancesPlanFactState.planFactById).pipe(takeUntilDestroyed(this._destroyRef));
+  articles$ = this._store.select(FinancesPlanFactState.planFactArticles).pipe(takeUntilDestroyed(this._destroyRef));
 
   columnDefs = MODAL_COLUMNS_DEFS
 
@@ -94,7 +95,6 @@ export class PlanFactUpsertDialogComponent implements OnInit {
 
   ngOnInit(): void {
 
-
     if(this.data.mode === 'add') {
 
       const currentDate = new Date();
@@ -119,6 +119,16 @@ export class PlanFactUpsertDialogComponent implements OnInit {
   
         articles: new FormArray([]),
       });
+
+      this.upsertPlanFormGroup.controls['type'].valueChanges.subscribe(type => {
+        if(type === 2){
+          this._store.dispatch(new LoadPlanFactArticles({
+            method: "GET",
+            endpoint: 'plan-fact/articles'
+          }))
+        }
+      })
+
     }
     else {
 

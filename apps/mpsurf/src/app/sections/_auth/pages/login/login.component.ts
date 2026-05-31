@@ -11,6 +11,7 @@ import { CarouselComponent } from '@ui-kit/carousel/carousel.component';
 import { FlagDetectorPipe } from '@ui-kit/pipes/flag-detector.pipe';
 import { TagColorPipe } from '@ui-kit/pipes/tag-color.pipe';
 import { GetShops, SetSelectedShop } from 'app/actions/main.actions';
+import { LoadShops } from 'app/sections/_profile/pages/shops/shops.actions';
 import { MainState } from 'app/states/main.state';
 import { environment } from 'environments/environment';
 import { NzButtonModule } from 'ng-zorro-antd/button';
@@ -119,12 +120,20 @@ export class LoginComponent implements OnInit {
     this.$isAuthorized.subscribe(() => {
 
       this._store.dispatch(
-        new GetShops({ 
-          method: 'POST', 
-          action: 'getDataShopWB',
-          endpoint: 'data',
-          host: this.HOST,
-        })
+        [
+          new GetShops({ 
+            method: 'POST', 
+            action: 'getDataShopWB',
+            endpoint: 'data',
+            host: this.HOST,
+          }),
+          this._store.dispatch(new LoadShops({
+            method: 'POST',
+            endpoint: 'data',
+            action: 'getDataShopWBList',
+            host: this.HOST
+          }))
+        ]
       )
 
       this.isLoginFormVisible.set(false);

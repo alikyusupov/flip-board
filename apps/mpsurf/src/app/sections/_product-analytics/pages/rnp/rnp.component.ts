@@ -29,7 +29,7 @@ import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzSelectModule } from 'ng-zorro-antd/select';
-import { filter, tap, combineLatest } from 'rxjs';
+import { combineLatest,filter, tap } from 'rxjs';
 
 import { LoadTableID_1, LoadTableID_2, LoadTableID_4 } from './rnp.actions';
 import { RNP_FILTERS, RNP_FILTERS_OZON } from './rnp.filters';

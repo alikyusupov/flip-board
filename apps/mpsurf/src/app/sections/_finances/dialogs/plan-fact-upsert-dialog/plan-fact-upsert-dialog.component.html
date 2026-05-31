@@ -51,7 +51,11 @@
           </nz-form-control>
         </nz-form-item>
 
-        @if(this.data.mode === 'edit' && (planfact$ | async)?.articles?.length) {
+        @if(
+          (this.data.mode === 'edit' && (planfact$ | async)?.articles?.length)
+          || 
+          (this.data.mode === 'add' && (articles$ | async)?.length)
+        ) {
 
           <div>
             <ag-grid-angular
@@ -68,7 +72,7 @@
               [paginationPageSize]="10"
               [paginationPageSizeSelector]="[5, 10, 15]"
               [domLayout]="'autoHeight'"
-              [rowData]="(planfact$ | async)?.articles"
+              [rowData]="(articles$ | async)"
               [rowDragManaged]="true"
               [rowHeight]="30"
               overlayNoRowsTemplate="Нет данных для отображения"

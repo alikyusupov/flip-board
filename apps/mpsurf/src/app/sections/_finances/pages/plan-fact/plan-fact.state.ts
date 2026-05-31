@@ -6,8 +6,8 @@ import { NzNotificationService } from "ng-zorro-antd/notification";
 import { switchMap } from "rxjs";
 
 import { FINANCES_SERVICE_TOKEN } from "../../tokens";
-import { ClonePlanFact, DeletePlanFact, LoadChart, LoadFullTable, LoadGeneralInfo, LoadPlanCards, LoadPlanFactById, LoadPlanFacts, ResetPlanFact, UpsertPlanFact } from "./plan-fact.actions";
-import { IFullTableItem, IPlanFactById, IPlanFactChartItem, IPlanFactGeneralInfo, IPlanFactItem } from "./plan-fact.model";
+import { ClonePlanFact, DeletePlanFact, LoadChart, LoadFullTable, LoadGeneralInfo, LoadPlanCards, LoadPlanFactArticles, LoadPlanFactById, LoadPlanFacts, ResetPlanFact, UpsertPlanFact } from "./plan-fact.actions";
+import { IFullTableItem, IPlanFactById, IPlanFactByIdArticle, IPlanFactChartItem, IPlanFactGeneralInfo, IPlanFactItem } from "./plan-fact.model";
 
 export interface FinancesPlanFactStateModel {
 
@@ -17,6 +17,7 @@ export interface FinancesPlanFactStateModel {
   isPlanFactChartLoading: boolean,
   isPlanFactFulltableLoading: boolean,
   isPlanFactByIdLoading: boolean,
+  isPlanFactArticlesLoading: boolean,
 
   planFactListStatus: ApiRequestStateType,
   planFactCardsStatus: ApiRequestStateType,
@@ -24,6 +25,7 @@ export interface FinancesPlanFactStateModel {
   planFactChartStatus: ApiRequestStateType,
   planFactFulltableStatus: ApiRequestStateType,
   planFactByIdStatus: ApiRequestStateType,
+  planFactArticlesStatus: ApiRequestStateType,
 
   planFactList: IPlanFactItem[],
   planFactCards: ICardWidget[],
@@ -31,6 +33,7 @@ export interface FinancesPlanFactStateModel {
   planFactChart: IPlanFactChartItem[],
   planFactFulltable: IFullTableItem[],
   planFactById: IPlanFactById | null,
+  planFactArticles: IPlanFactByIdArticle[],
 }
 
 @State<FinancesPlanFactStateModel>({
@@ -39,18 +42,21 @@ export interface FinancesPlanFactStateModel {
     isPlanFactListLoading: false,
     planFactListStatus: 'success',
     planFactList: [],
+    planFactArticles: [],
 
     isPlanFactCardsLoading: false,
     isPlanFactGeneralInfoLoading: false,
     isPlanFactChartLoading: false,
     isPlanFactFulltableLoading: false,
     isPlanFactByIdLoading: false,
+    isPlanFactArticlesLoading: false,
 
     planFactCardsStatus: "success",
     planFactGeneralInfoStatus: "success",
     planFactChartStatus: "success",
     planFactFulltableStatus: "success",
     planFactByIdStatus: "success",
+    planFactArticlesStatus: "success",
 
     planFactCards: [],
     planFactGeneralInfo: null,
@@ -155,6 +161,11 @@ export class FinancesPlanFactState {
     return state.planFactByIdStatus;
   }
 
+  @Selector()
+  static planFactArticles(state: FinancesPlanFactStateModel): IPlanFactByIdArticle[] {
+    return state.planFactArticles;
+  }
+
   @Action(LoadPlanFacts)
   loadPlanfacts(ctx: StateContext<FinancesPlanFactStateModel>, {dto}: LoadPlanFacts) {
     ctx.patchState({
@@ -175,6 +186,31 @@ export class FinancesPlanFactState {
           ctx.patchState({
             planFactListStatus: 'error',
             isPlanFactListLoading: false
+          })
+        }
+      })
+  }
+
+  @Action(LoadPlanFactArticles)
+  loadPlanFactArticles(ctx: StateContext<FinancesPlanFactStateModel>, {dto}: LoadPlanFactArticles) {
+    ctx.patchState({
+      planFactArticles: [],
+      planFactArticlesStatus: 'success',
+      isPlanFactArticlesLoading: true
+    })
+
+    this.financesService.loadPlanFactArticles(dto)
+      .subscribe({
+        next(data) {
+          ctx.patchState({
+            planFactArticles: data,
+            isPlanFactArticlesLoading: false
+          })
+        },
+        error() {
+          ctx.patchState({
+            planFactArticlesStatus: 'error',
+            isPlanFactArticlesLoading: false
           })
         }
       })
