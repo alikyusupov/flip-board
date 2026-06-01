@@ -149,7 +149,7 @@ export class PlanFactUpsertDialogComponent implements OnInit {
       
             period: new FormControl(planDate, { nonNullable: true }),
       
-            type: new FormControl(plan.type, { nonNullable: true }),
+            type: new FormControl({ value: plan.type, disabled: true }, { nonNullable: true }),
       
             method: new FormControl(plan.method, { nonNullable: true }),
            

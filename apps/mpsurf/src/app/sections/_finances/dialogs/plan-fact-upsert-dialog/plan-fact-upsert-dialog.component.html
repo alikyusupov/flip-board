@@ -71,7 +71,7 @@
               [paginationPageSize]="10"
               [paginationPageSizeSelector]="[5, 10, 15]"
               [domLayout]="'autoHeight'"
-              [rowData]="(articles$ | async)"
+              [rowData]="this.data.mode === 'add' ? (articles$ | async) : (planfact$ | async)?.articles"
               [rowDragManaged]="true"
               [rowHeight]="30"
               overlayNoRowsTemplate="Нет данных для отображения"
