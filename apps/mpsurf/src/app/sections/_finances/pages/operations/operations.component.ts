@@ -20,18 +20,30 @@ declare namespace FileSaver {
   function saveAs(data: Blob, filename?: string): void;
 }
 
-declare namespace ExcelJS {
-  interface Worksheet {
-    columns: Array<{ header: string; key: string; width: number }>;
-    addRow(data: Record<string, string | number>): void;
-  }
+interface IExcelWorksheet {
+  columns: Array<{ header: string; key: string; width: number }>;
+  addRow(data: Record<string, string | number>): void;
+}
 
-  class Workbook {
-    xlsx: {
-      writeBuffer(): Promise<ArrayBuffer>;
-    };
-    addWorksheet(name: string): Worksheet;
-  }
+interface IExcelWorkbook {
+  xlsx: {
+    writeBuffer(): Promise<ArrayBuffer>;
+  };
+  addWorksheet(name: string): IExcelWorksheet;
+}
+
+type ExcelWorkbookConstructor = new () => IExcelWorkbook;
+
+interface IExcelJsModule {
+  Workbook?: ExcelWorkbookConstructor;
+  default?: {
+    Workbook?: ExcelWorkbookConstructor;
+  };
+}
+
+interface IFileSaverModule {
+  saveAs?: typeof FileSaver.saveAs;
+  default?: typeof FileSaver.saveAs;
 }
 
 @Component({
@@ -42,8 +54,8 @@ declare namespace ExcelJS {
 }) 
 export class OperationsComponent implements OnInit {
 
-  filesaver: typeof FileSaver | null = null;
-  exceljs: typeof ExcelJS | null = null;
+  filesaver: IFileSaverModule | null = null;
+  exceljs: IExcelJsModule | null = null;
 
   private readonly _store = inject(Store);
   private readonly _destroyRef = inject(DestroyRef);
@@ -107,18 +119,21 @@ export class OperationsComponent implements OnInit {
   async onExportToExcel() {
 
     if(!this.filesaver) {
-      this.filesaver = await import('file-saver') as unknown as typeof FileSaver;
+      this.filesaver = await import('file-saver') as unknown as IFileSaverModule;
     }
     if(!this.exceljs){
-      this.exceljs = await import('exceljs') as unknown as typeof ExcelJS;
+      this.exceljs = await import('exceljs') as unknown as IExcelJsModule;
     }
     const fileSaver = this.filesaver;
     const excelJs = this.exceljs;
-    if (!fileSaver || !excelJs) return;
+    const saveAs = fileSaver?.saveAs ?? fileSaver?.default;
+    const Workbook = excelJs?.Workbook ?? excelJs?.default?.Workbook;
+
+    if (!saveAs || !Workbook) return;
 
     const data: IFinOperationExportItem[] = (await lastValueFrom(this._financesService.loadOperationsExport({method: 'GET', endpoint: 'fin-operation/export'})));
     
-    const workbook = new excelJs.Workbook();
+    const workbook = new Workbook();
     const workSheet = workbook.addWorksheet(`ABC`);
     workSheet.columns = [
       { header: 'Дата оплаты / перемещения (для ДДС)', key: 'Дата оплаты / перемещения (для ДДС)', width: 15 },
@@ -149,13 +164,13 @@ export class OperationsComponent implements OnInit {
     })
 
     const file = await workbook.xlsx.writeBuffer();
-    const fileName = `Fin-operation_${new Date().getTime()}.xls`;
+    const fileName = `Fin-operation_${new Date().getTime()}.xlsx`;
 
     const blob = new Blob([file], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
     });
 
-    fileSaver.saveAs(
+    saveAs(
       blob,
       fileName 
     );
