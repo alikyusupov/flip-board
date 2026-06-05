@@ -19,3 +19,16 @@ export interface IFinOperation {
   "shop_name": string,
   "type_operation_title": string
 }
+
+export interface IFinOperationExportItem {
+  "Дата оплаты / перемещения (для ДДС)": string,
+  "Дата начисления (для ОПиУ)": string,
+  "Счёт": string,
+  "Тип операции": string,
+  "Артикул": string,
+  "Контрагент": string,
+  "Статья": string,
+  "Сумма": string,
+  "Кабинет": string,
+  "Комментарий": string
+}

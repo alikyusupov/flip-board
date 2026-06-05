@@ -7,23 +7,48 @@ import { ColDef, themeAlpine } from 'ag-grid-community';
 import { GlobalDateRangeService } from 'app/services/global-date-range.service';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
 import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
-
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { LoadOperations } from './operations.actions';
 import { FIN_OPERATION_COLUMN_DEFS } from './operations.definition';
 import { FinancesOperationsState } from './operations.state';
+import { lastValueFrom } from 'rxjs';
+import { IFinOperationExportItem } from './operations.model';
+import { FINANCES_SERVICE_TOKEN } from '../../tokens';
 
+declare namespace FileSaver {
+  function saveAs(data: Blob, filename?: string): void;
+}
+
+declare namespace ExcelJS {
+  interface Worksheet {
+    columns: Array<{ header: string; key: string; width: number }>;
+    addRow(data: Record<string, string | number>): void;
+  }
+
+  class Workbook {
+    xlsx: {
+      writeBuffer(): Promise<ArrayBuffer>;
+    };
+    addWorksheet(name: string): Worksheet;
+  }
+}
 
 @Component({
   selector: 'app-operations',
-  imports: [AsyncPipe, AgGridAngular, NzSkeletonModule],
+  imports: [AsyncPipe, AgGridAngular, NzSkeletonModule, NzButtonModule, NzIconModule],
   templateUrl: './operations.component.html',
   styleUrl: './operations.component.scss'
 }) 
 export class OperationsComponent implements OnInit {
 
+  filesaver: typeof FileSaver | null = null;
+  exceljs: typeof ExcelJS | null = null;
+
   private readonly _store = inject(Store);
   private readonly _destroyRef = inject(DestroyRef);
   private readonly _dateRangeService = inject(GlobalDateRangeService);
+  private readonly _financesService = inject(FINANCES_SERVICE_TOKEN);
 
   readonly defaultColDef: ColDef = {
     headerClass: 'header-centered',
@@ -76,6 +101,64 @@ export class OperationsComponent implements OnInit {
         }));
   
       })
+
+  }
+
+  async onExportToExcel() {
+
+    if(!this.filesaver) {
+      this.filesaver = await import('file-saver') as unknown as typeof FileSaver;
+    }
+    if(!this.exceljs){
+      this.exceljs = await import('exceljs') as unknown as typeof ExcelJS;
+    }
+    const fileSaver = this.filesaver;
+    const excelJs = this.exceljs;
+    if (!fileSaver || !excelJs) return;
+
+    const data: IFinOperationExportItem[] = (await lastValueFrom(this._financesService.loadOperationsExport({method: 'GET', endpoint: 'fin-operation/export'})));
+    
+    const workbook = new excelJs.Workbook();
+    const workSheet = workbook.addWorksheet(`ABC`);
+    workSheet.columns = [
+      { header: 'Дата оплаты / перемещения (для ДДС)', key: 'Дата оплаты / перемещения (для ДДС)', width: 15 },
+      { header: 'Дата начисления (для ОПиУ)', key: 'Дата начисления (для ОПиУ)', width: 15 },
+      { header: 'Счёт', key: 'Счёт', width: 25 },
+      { header: 'Тип операции', key: 'Тип операции', width: 20 },
+      { header: 'Артикул', key: 'Артикул', width: 20 },
+      { header: 'Контрагент', key: 'Контрагент', width: 20 },
+      { header: 'Статья', key: 'Статья', width: 15 },
+      { header: 'Сумма', key: 'Сумма', width: 20 },
+      { header: 'Кабинет', key: 'Кабинет', width: 20 },
+      { header: 'Комментарий', key: 'Комментарий', width: 20 },
+    ];
+
+    data.forEach(dataItem => {
+      workSheet.addRow({
+        "Дата оплаты / перемещения (для ДДС)": dataItem['Дата оплаты / перемещения (для ДДС)'],
+        "Дата начисления (для ОПиУ)": dataItem['Дата начисления (для ОПиУ)'],
+        "Счёт": dataItem['Счёт'],
+        "Тип операции": dataItem['Тип операции'],
+        "Артикул": dataItem['Артикул'],
+        "Контрагент": dataItem['Контрагент'],
+        "Статья": dataItem['Статья'],
+        "Сумма": parseFloat(dataItem['Сумма']),
+        "Кабинет": dataItem['Кабинет'],
+        "Комментарий": dataItem['Комментарий']
+      })
+    })
+
+    const file = await workbook.xlsx.writeBuffer();
+    const fileName = `Fin-operation_${new Date().getTime()}.xls`;
+
+    const blob = new Blob([file], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8',
+    });
+
+    fileSaver.saveAs(
+      blob,
+      fileName 
+    );
 
   }
 

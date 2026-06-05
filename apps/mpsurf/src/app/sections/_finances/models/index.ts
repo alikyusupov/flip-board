@@ -2,7 +2,7 @@ import { IApiConfigDto, IBaseResponseData, ICardWidget } from "@models";
 import { Observable } from "rxjs";
 
 import { IDDSAccount, IDDSGridData, IDDSPartner } from "../pages/dds/dds.model";
-import { IFinOperation } from "../pages/operations/operations.model";
+import { IFinOperation, IFinOperationExportItem } from "../pages/operations/operations.model";
 import { IFullTableItem, IPlanFactById, IPlanFactByIdArticle, IPlanFactChartItem, IPlanFactGeneralInfo, IPlanFactItem } from "../pages/plan-fact/plan-fact.model";
 import { IPNLGridData } from "../pages/pnl/pnl.model";
 import { IReconciliationRow } from "../pages/reconciliation/reconciliation.model";
@@ -15,6 +15,8 @@ export interface IFinancesService {
   loadPnlGrid: (dto: IApiConfigDto) => Observable<IPNLGridData>,
 
   loadOperations: (dto: IApiConfigDto) => Observable<IFinOperation[]>,
+
+  loadOperationsExport: (dto: IApiConfigDto) => Observable<IFinOperationExportItem[]>,
 
   loadReconciliationRows: (dto: IApiConfigDto) => Observable<IReconciliationRow[]>,
 
