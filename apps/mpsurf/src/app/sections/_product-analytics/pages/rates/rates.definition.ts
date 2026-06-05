@@ -1,7 +1,7 @@
 import { DecimalPipe } from '@angular/common';
 import { PhotoTooltipComponent } from '@ui-kit/photo-tooltip/photo-tooltip.component';
 import type { ColDef, ColGroupDef } from 'ag-grid-community';
-import { getCurrencyIcon, NumberSortFunc } from 'app/utils';
+import { getCurrencyIcon, numberComparator } from 'app/utils';
 
 const decimalPipe = new DecimalPipe('ru-RU');
 
@@ -22,7 +22,7 @@ export const MAIN_TAB_COLUMN_DEFS_COMMON: (ColDef | ColGroupDef)[] = [
     filter: false,
     type: 'rightAligned',
     valueFormatter: v => decimalPipe.transform(v.value, '1.0-0') as string,
-    // comparator: NumberSortFunc
+    // comparator: numberComparator
   },
   {
     field: 'returnsTotal',
@@ -30,7 +30,7 @@ export const MAIN_TAB_COLUMN_DEFS_COMMON: (ColDef | ColGroupDef)[] = [
     filter: false,
     type: 'rightAligned',
     valueFormatter: v => decimalPipe.transform(v.value, '1.0-0') as string,
-    //comparator: NumberSortFunc
+    //comparator: numberComparator
   },
 ];
 
@@ -56,7 +56,7 @@ export const WB_MAIN_TAB_COLUMN_DEFS_BY_DATE: (ColDef | ColGroupDef)[] = [
     filter: false,
     type: 'rightAligned',
     valueFormatter: v => decimalPipe.transform(v.value, '1.0-0') as string,
-    comparator: (valueA, valueB, nodeA, nodeB) => NumberSortFunc(Number(nodeA.data.ordersTotal), Number(nodeB.data.ordersTotal))
+    comparator: (valueA, valueB, nodeA, nodeB) => numberComparator(Number(nodeA.data.ordersTotal), Number(nodeB.data.ordersTotal))
 
   },
   {
@@ -65,7 +65,7 @@ export const WB_MAIN_TAB_COLUMN_DEFS_BY_DATE: (ColDef | ColGroupDef)[] = [
     filter: false,
     type: 'rightAligned',
     valueFormatter: v => decimalPipe.transform(v.value, '1.0-0') as string,
-    comparator: (valueA, valueB, nodeA, nodeB) => NumberSortFunc(Number(nodeA.data.cancelsCount), Number(nodeB.data.cancelsCount))
+    comparator: (valueA, valueB, nodeA, nodeB) => numberComparator(Number(nodeA.data.cancelsCount), Number(nodeB.data.cancelsCount))
   },
   {
     field: 'cancelsTotal',
@@ -73,7 +73,7 @@ export const WB_MAIN_TAB_COLUMN_DEFS_BY_DATE: (ColDef | ColGroupDef)[] = [
     filter: false,
     type: 'rightAligned',
     valueFormatter: v => decimalPipe.transform(v.value, '1.0-0') as string,
-    comparator: (valueA, valueB, nodeA, nodeB) => NumberSortFunc(Number(nodeA.data.cancelsTotal), Number(nodeB.data.cancelsTotal))
+    comparator: (valueA, valueB, nodeA, nodeB) => numberComparator(Number(nodeA.data.cancelsTotal), Number(nodeB.data.cancelsTotal))
   },
   {
     field: 'salesCount',
@@ -81,7 +81,7 @@ export const WB_MAIN_TAB_COLUMN_DEFS_BY_DATE: (ColDef | ColGroupDef)[] = [
     filter: false,
     type: 'rightAligned',
     valueFormatter: v => decimalPipe.transform(v.value, '1.0-0') as string,
-    comparator: (valueA, valueB, nodeA, nodeB) => NumberSortFunc(Number(nodeA.data.salesCount), Number(nodeB.data.salesCount))
+    comparator: (valueA, valueB, nodeA, nodeB) => numberComparator(Number(nodeA.data.salesCount), Number(nodeB.data.salesCount))
 
   },
   {
@@ -90,7 +90,7 @@ export const WB_MAIN_TAB_COLUMN_DEFS_BY_DATE: (ColDef | ColGroupDef)[] = [
     filter: false,
     type: 'rightAligned',
     valueFormatter: v => decimalPipe.transform(v.value, '1.0-0') as string,
-    comparator: (valueA, valueB, nodeA, nodeB) => NumberSortFunc(Number(nodeA.data.salesTotal), Number(nodeB.data.salesTotal))
+    comparator: (valueA, valueB, nodeA, nodeB) => numberComparator(Number(nodeA.data.salesTotal), Number(nodeB.data.salesTotal))
   },
   ...MAIN_TAB_COLUMN_DEFS_COMMON,
 ];
@@ -130,7 +130,7 @@ export const WB_MAIN_TAB_COLUMN_DEFS_BY_PRODUCT: (ColDef | ColGroupDef)[] = [
     filter: false,
     type: 'rightAligned',
     valueFormatter: v => decimalPipe.transform(v.value, '1.0-0') as string,
-    comparator: (valueA, valueB, nodeA, nodeB) => NumberSortFunc(Number(nodeA.data.ordersCount), Number(nodeB.data.ordersCount))
+    comparator: (valueA, valueB, nodeA, nodeB) => numberComparator(Number(nodeA.data.ordersCount), Number(nodeB.data.ordersCount))
   },
   {
     field: 'ordersTotal',
@@ -138,7 +138,7 @@ export const WB_MAIN_TAB_COLUMN_DEFS_BY_PRODUCT: (ColDef | ColGroupDef)[] = [
     filter: false,
     type: 'rightAligned',
     valueFormatter: v => decimalPipe.transform(v.value, '1.0-0') as string,
-    comparator: (valueA, valueB, nodeA, nodeB) => NumberSortFunc(Number(nodeA.data.ordersTotal), Number(nodeB.data.ordersTotal))
+    comparator: (valueA, valueB, nodeA, nodeB) => numberComparator(Number(nodeA.data.ordersTotal), Number(nodeB.data.ordersTotal))
   },
   {
     field: 'cancelsCount',
@@ -146,7 +146,7 @@ export const WB_MAIN_TAB_COLUMN_DEFS_BY_PRODUCT: (ColDef | ColGroupDef)[] = [
     filter: false,
     type: 'rightAligned',
     valueFormatter: v => decimalPipe.transform(v.value, '1.0-0') as string,
-    comparator: (valueA, valueB, nodeA, nodeB) => NumberSortFunc(Number(nodeA.data.cancelsCount), Number(nodeB.data.cancelsCount))
+    comparator: (valueA, valueB, nodeA, nodeB) => numberComparator(Number(nodeA.data.cancelsCount), Number(nodeB.data.cancelsCount))
   },
   {
     field: 'cancelsTotal',
@@ -154,7 +154,7 @@ export const WB_MAIN_TAB_COLUMN_DEFS_BY_PRODUCT: (ColDef | ColGroupDef)[] = [
     filter: false,
     type: 'rightAligned',
     valueFormatter: v => decimalPipe.transform(v.value, '1.0-0') as string,
-    comparator: (valueA, valueB, nodeA, nodeB) => NumberSortFunc(Number(nodeA.data.cancelsTotal), Number(nodeB.data.cancelsTotal))
+    comparator: (valueA, valueB, nodeA, nodeB) => numberComparator(Number(nodeA.data.cancelsTotal), Number(nodeB.data.cancelsTotal))
   },
   {
     field: 'salesCount',
@@ -162,7 +162,7 @@ export const WB_MAIN_TAB_COLUMN_DEFS_BY_PRODUCT: (ColDef | ColGroupDef)[] = [
     filter: false,
     type: 'rightAligned',
     valueFormatter: v => decimalPipe.transform(v.value, '1.0-0') as string,
-    comparator: (valueA, valueB, nodeA, nodeB) => NumberSortFunc(Number(nodeA.data.salesCount), Number(nodeB.data.salesCount))
+    comparator: (valueA, valueB, nodeA, nodeB) => numberComparator(Number(nodeA.data.salesCount), Number(nodeB.data.salesCount))
   },
   {
     field: 'salesTotal',
@@ -170,7 +170,7 @@ export const WB_MAIN_TAB_COLUMN_DEFS_BY_PRODUCT: (ColDef | ColGroupDef)[] = [
     filter: false,
     type: 'rightAligned',
     valueFormatter: v => decimalPipe.transform(v.value, '1.0-0') as string,
-    comparator: (valueA, valueB, nodeA, nodeB) => NumberSortFunc(Number(nodeA.data.salesTotal), Number(nodeB.data.salesTotal))
+    comparator: (valueA, valueB, nodeA, nodeB) => numberComparator(Number(nodeA.data.salesTotal), Number(nodeB.data.salesTotal))
   },
   ...MAIN_TAB_COLUMN_DEFS_COMMON,
 ];
@@ -191,7 +191,7 @@ export const OZON_MAIN_TAB_COLUMN_DEFS_BY_DATE: (ColDef | ColGroupDef)[] = [
     filter: false,
     type: 'rightAligned',
     valueFormatter: v => decimalPipe.transform(v.value, '1.0-0') as string,
-        comparator: (valueA, valueB, nodeA, nodeB) => NumberSortFunc(Number(nodeA.data.salesCount), Number(nodeB.data.salesCount))
+        comparator: (valueA, valueB, nodeA, nodeB) => numberComparator(Number(nodeA.data.salesCount), Number(nodeB.data.salesCount))
   },
   {
     field: 'salesTotal',
@@ -199,7 +199,7 @@ export const OZON_MAIN_TAB_COLUMN_DEFS_BY_DATE: (ColDef | ColGroupDef)[] = [
     filter: false,
     type: 'rightAligned',
     valueFormatter: v => decimalPipe.transform(v.value, '1.0-0') as string,
-    comparator: (valueA, valueB, nodeA, nodeB) => NumberSortFunc(Number(nodeA.data.salesTotal), Number(nodeB.data.salesTotal))
+    comparator: (valueA, valueB, nodeA, nodeB) => numberComparator(Number(nodeA.data.salesTotal), Number(nodeB.data.salesTotal))
   },
   ...MAIN_TAB_COLUMN_DEFS_COMMON,
 ];
@@ -216,7 +216,7 @@ export const OZON_MAIN_TAB_COLUMN_DEFS_BY_PRODUCT: (ColDef | ColGroupDef)[] = [
     filter: false,
     type: 'rightAligned',
     valueFormatter: v => decimalPipe.transform(v.value, '1.0-0') as string      ,
-    comparator: (valueA, valueB, nodeA, nodeB) => NumberSortFunc(Number(nodeA.data.salesCount), Number(nodeB.data.salesCount))
+    comparator: (valueA, valueB, nodeA, nodeB) => numberComparator(Number(nodeA.data.salesCount), Number(nodeB.data.salesCount))
   },
   {
     field: 'salesTotal',
@@ -224,7 +224,7 @@ export const OZON_MAIN_TAB_COLUMN_DEFS_BY_PRODUCT: (ColDef | ColGroupDef)[] = [
     filter: false,
     type: 'rightAligned',
     valueFormatter: v => decimalPipe.transform(v.value, '1.0-0') as string,
-    comparator: (valueA, valueB, nodeA, nodeB) => NumberSortFunc(Number(nodeA.data.salesTotal), Number(nodeB.data.salesTotal))
+    comparator: (valueA, valueB, nodeA, nodeB) => numberComparator(Number(nodeA.data.salesTotal), Number(nodeB.data.salesTotal))
   },
   ...MAIN_TAB_COLUMN_DEFS_COMMON,
 ];

@@ -1,5 +1,6 @@
 import { DecimalPipe } from '@angular/common';
 import { ColDef } from 'ag-grid-community';
+import { dateComparator_ddMMyyyy, monthYearComparator } from 'app/utils';
 
 import { ButtonRendererComponent } from './buttons/button-renderer.component';
 import { PlanFactControlsRendererComponent } from './buttons/controls-renderer.component';
@@ -12,12 +13,15 @@ export const PLAN_FACT_COLUMN_DEFS: ColDef[] = [
         width: 85,
         cellRenderer: ButtonRendererComponent,
         cellStyle: { paddingLeft: '0px', paddingRight: '0px' },
+        filter: false,
+        sortable: false
     },
     {
         headerName: 'Дата формирования плана',
         field: 'created_at',
         width: 160,
         filter: 'agTextColumnFilter',
+        comparator: dateComparator_ddMMyyyy
     },
     {
         headerName: 'Название плана',
@@ -30,6 +34,7 @@ export const PLAN_FACT_COLUMN_DEFS: ColDef[] = [
         field: 'dateFrom',
         width: 160,
         filter: 'agTextColumnFilter',
+        comparator: monthYearComparator
     },
     {
         headerName: 'Цель',
@@ -69,6 +74,7 @@ export const MODAL_COLUMNS_DEFS: ColDef[] = [
         headerCheckboxSelection: true,
         headerCheckboxSelectionFilteredOnly: true,
         filter: false,
+        sortable: false,
         width: 60,
         checkboxSelection: true,
     },

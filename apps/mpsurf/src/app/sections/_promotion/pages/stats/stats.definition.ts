@@ -1,6 +1,7 @@
 import { DecimalPipe } from '@angular/common';
 import { UnitPipe } from '@ui-kit/pipes/unit.pipe';
 import { ColDef } from 'ag-grid-community';
+import { dateComparator_ddMMyyyy } from 'app/utils';
 
 import { IStatsListItem } from './stats.model';
 
@@ -17,6 +18,7 @@ export function genarateColumnDefs(isOzon: boolean, currency: string): ColDef[] 
       filter: 'agTextColumnFilter',
       width: 180,
       cellStyle: { textAlign: 'left' },
+      comparator: dateComparator_ddMMyyyy
     },
     {
       field: 'advertId',

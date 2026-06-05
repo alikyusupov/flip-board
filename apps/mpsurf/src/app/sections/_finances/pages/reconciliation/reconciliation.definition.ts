@@ -1,6 +1,6 @@
 import { DecimalPipe } from '@angular/common';
 import { ColDef } from 'ag-grid-community';
-import { getCurrencyIcon } from 'app/utils';
+import { dateComparator_ddMMyyyy, getCurrencyIcon } from 'app/utils';
 
 const decimalPipe = new DecimalPipe('ru-RU')
 
@@ -18,6 +18,7 @@ export const RECONCILIATION_COLUMNS_DEFS: ColDef[] = [
     width: 150,
     pinned: 'left',
     filter: 'agDateColumnFilter',
+    comparator: dateComparator_ddMMyyyy
   },
   {
     headerName: 'Дата конца',

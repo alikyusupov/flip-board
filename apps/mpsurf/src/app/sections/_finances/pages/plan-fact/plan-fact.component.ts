@@ -4,11 +4,14 @@ import { AsyncPipe, DecimalPipe, NgStyle } from '@angular/common';
 import { Component, DestroyRef, inject, OnDestroy, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { AG_GRID_RUSSIAN_LOCALE } from '@consts';
 import { Store } from '@ngxs/store';
 import { CardComponent } from '@ui-kit/card/card.component';
+import { MpCurrencyPipe } from '@ui-kit/pipes/currency.pipe';
 import { UnitPipe } from '@ui-kit/pipes/unit.pipe';
 import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef,GridApi,GridOptions,GridReadyEvent,themeAlpine } from 'ag-grid-community';
+import { CURRENCY } from 'app/tokens';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -27,7 +30,7 @@ export type DialogType = 'add' | 'delete' | 'edit'
 
 @Component({
   selector: 'app-plan-fact',
-  imports: [AsyncPipe, AgGridAngular, NzSkeletonModule, DecimalPipe, UnitPipe, CardComponent, NgApexchartsModule, MatTableModule, NgStyle, NzButtonModule, NzIconModule, NzModalModule],
+  imports: [AsyncPipe, AgGridAngular, NzSkeletonModule, DecimalPipe, UnitPipe, CardComponent, NgApexchartsModule, MatTableModule, NgStyle, NzButtonModule, NzIconModule, NzModalModule, MpCurrencyPipe],
   templateUrl: './plan-fact.component.html',
   styleUrl: './plan-fact.component.scss'
 })
@@ -37,13 +40,13 @@ export class PlanFactComponent implements OnInit, OnDestroy {
   private readonly _store = inject(Store);
   private readonly dialog = inject(Dialog);
   private readonly modalService = inject(NzModalService);
+  protected readonly currency = inject(CURRENCY)
 
   public dataSource = new MatTableDataSource<IFullTableItem>([]);
 
   planId = 0;
   start = '';
   editMode = false;
-  currency = ''
 
   dateKeys = [];
   selectedDateType = 1;
@@ -96,6 +99,7 @@ export class PlanFactComponent implements OnInit, OnDestroy {
   gridOptionsPlanFact = {
     context: { componentParent: this },
     enableCellTextSelection: true,
+    localeText: AG_GRID_RUSSIAN_LOCALE
   } as GridOptions;
 
   columnDefs = PLAN_FACT_COLUMN_DEFS;

@@ -1,17 +1,21 @@
 import { DecimalPipe, NgClass } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { ICardWidget } from '@models';
+import { MpCurrencyPipe } from '@ui-kit/pipes/currency.pipe';
 import { UnitPipe } from '@ui-kit/pipes/unit.pipe';
+import { CURRENCY } from 'app/tokens';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'app-rate-card',
-  imports: [NzIconModule, NzTooltipModule, DecimalPipe, NgClass, UnitPipe],
+  imports: [NzIconModule, NzTooltipModule, DecimalPipe, NgClass, UnitPipe, MpCurrencyPipe],
   templateUrl: './rate-card.component.html',
   styleUrl: './rate-card.component.scss'
 })
 export class RateCardComponent {
+
+  protected readonly currency = inject(CURRENCY)
 
   readonly titlesWithReversedLogic = [
     'Комиссия',

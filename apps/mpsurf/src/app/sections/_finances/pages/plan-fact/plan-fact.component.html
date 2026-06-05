@@ -93,8 +93,8 @@
                 <th scope="col"></th>
                 <th scope="col">План</th>
                 <th scope="col">Факт</th>
-                <th scope="col">Разница, {{currency}}</th>
-                <th scope="col">Разница, %</th>
+                <th scope="col">Разница</th>
+                <th scope="col">Разница</th>
               </tr>
             </thead>
             <tbody>
@@ -102,16 +102,16 @@
                 <tr>
                   <th scope="col">{{ row.name }}</th>
                   <th scope="col">
-                    {{ row.plan | number: '1.0-0' | mpUnit: 'rubles' }}
+                    {{ row.plan | number: '1.0-0' }} {{(currency() | mpcurrency).icon}}
                   </th>
                   <th scope="col">
-                    {{ row.fact | number: '1.0-0' | mpUnit: 'rubles' }}
+                    {{ row.fact | number: '1.0-0' }} {{(currency() | mpcurrency).icon}}
                   </th>
                   <th [class.red]="+row.delta1 < 0" [class.green]="+row.delta1 >= 0" scope="col">
                     @if(+row.delta1 >= 0){
                       <span>+</span>
                     }
-                    {{ row.delta1 | number: '1.0-0' | mpUnit: 'rubles' }}
+                    {{ row.delta1 | number: '1.0-0' }} {{(currency() | mpcurrency).icon}}
                   </th>
                   <th [class.red]="+row.delta1 < 0" [class.green]="+row.delta1 >= 0" scope="col">
                     @if(+row.delta1 >= 0){

@@ -88,7 +88,7 @@ export const SALES_TABLE_COLUMN_DEFS_WB: ColDef<ISalesTableItem>[] = [
     sortable: true,
     filter: 'agNumberColumnFilter',
     valueFormatter: v => unitPipe.transform(decimalPipe.transform(v.value, '1.0-1'), 'rubles'),
-    // comparator: NumberSortFunc
+    // comparator: numberComparator
   },
   {
     field: 'mp_sum',
@@ -97,7 +97,7 @@ export const SALES_TABLE_COLUMN_DEFS_WB: ColDef<ISalesTableItem>[] = [
     sortable: true,
     filter: 'agNumberColumnFilter',
     valueFormatter: v => unitPipe.transform(decimalPipe.transform(v.value, '1.0-1'), 'rubles'),
-    // comparator: NumberSortFunc
+    // comparator: numberComparator
   },
   {
     field: 'spp',
@@ -114,7 +114,7 @@ export const SALES_TABLE_COLUMN_DEFS_WB: ColDef<ISalesTableItem>[] = [
     sortable: true,
     filter: 'agNumberColumnFilter',
     valueFormatter: v => unitPipe.transform(decimalPipe.transform(v.value, '1.0-1'), 'rubles'),
-    // comparator: NumberSortFunc
+    // comparator: numberComparator
   },
   {
     field: 'warehouseName',
@@ -235,7 +235,7 @@ export const SALES_TABLE_COLUMN_DEFS_OZON: (ColDef | ColGroupDef)[] = [
     sortable: true,
     filter: 'agNumberColumnFilter',
     valueFormatter: v => unitPipe.transform(decimalPipe.transform(v.value, '1.0-1'), 'rubles'),
-    // comparator: NumberSortFunc
+    // comparator: numberComparator
   },
   {
     field: 'mp_sum',
@@ -244,7 +244,7 @@ export const SALES_TABLE_COLUMN_DEFS_OZON: (ColDef | ColGroupDef)[] = [
     sortable: true,
     filter: 'agNumberColumnFilter',
     valueFormatter: v => unitPipe.transform(decimalPipe.transform(v.value, '1.0-1'), 'rubles'),
-    // comparator: NumberSortFunc
+    // comparator: numberComparator
   },
   {
     field: 'warehouseName',

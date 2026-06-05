@@ -8,6 +8,7 @@ import { Store } from '@ngxs/store';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
@@ -48,6 +49,7 @@ export class AppComponent implements OnInit {
   private readonly _store = inject(Store);
   private readonly _destroyRef = inject(DestroyRef);
   private readonly _router = inject(Router);
+  private readonly _notification = inject(NzNotificationService)
 
   themeControl = new FormControl(false, {nonNullable: true});
   shopControl = new FormControl<null | number>(null, {nonNullable: true});
@@ -66,6 +68,13 @@ export class AppComponent implements OnInit {
   isAuthorized$ = this._store.select(AuthState.isAuthorized).pipe(takeUntilDestroyed(this._destroyRef));
 
   ngOnInit(): void {
+
+    this._notification.create(
+      'success', 
+      'Добро пожаловать в бета-версию сайта!', 
+      'Обратите внимание: сейчас мы проверяем работу всех систем. Часть функционала пока находится в разработке и может быть недоступна. Благодарим за понимание и обратную связь.',
+      {nzDuration: 10000}
+    )
 
     this.themeControl.valueChanges.subscribe(v => this._themeService.toggleMode(v ? 'dark' : 'light'));
 

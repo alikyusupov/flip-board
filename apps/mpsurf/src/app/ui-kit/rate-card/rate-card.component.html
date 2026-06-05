@@ -62,7 +62,7 @@
     <section class="level1" style="margin-top: 14px; margin-bottom: 4px;">
   
       <div>
-        <span>{{card().totalSum | number: '1.0-0' | mpUnit: unit()}}</span>
+        <span>{{card().totalSum | number: '1.0-0'}} {{ (currency() | mpcurrency).icon }}</span>
       </div>
   
       @if(card().totalSumDiff){
@@ -73,7 +73,7 @@
           }"
         >
           {{ card().totalSumDiff < 0 ? '↓' : '↑' }}
-          <span>{{card().totalSumDiff | number: '1.0-0' | mpUnit: unit()}}</span>
+          <span>{{card().totalSumDiff | number: '1.0-0'}} {{ (currency() | mpcurrency).icon }}</span>
         </div>
       }
   
@@ -135,7 +135,7 @@
   
       <div class="left-part">
         <span style="font-weight: 500;">{{field.name}}</span>
-        <span>{{field.value | number: '1.0-0' | mpUnit: field.unit}}</span>
+        <span>{{ field.unit !== 'rubles' ? (field.value | number: '1.0-0' | mpUnit: field.unit) : ((field.value | number: '1.0-0') + ' ' + (currency() | mpcurrency).icon) }}</span>
       </div>
 
       @if(field.valueDiff){
