@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+
 import { Component, OnInit } from '@angular/core';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 
@@ -10,7 +10,7 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 @Component({
   selector: 'app-yandex-callback',
   standalone: true,
-  imports: [CommonModule, NzSpinModule],
+  imports: [NzSpinModule],
   template: `
     <div class="callback-container">
       <nz-spin nzSimple [nzSize]="'large'"></nz-spin>

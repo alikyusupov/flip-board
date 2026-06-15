@@ -1,57 +1,88 @@
 <!-- eslint-disable @angular-eslint/template/eqeqeq -->
 <article class="mp_card" [style.backgroundColor]="getBgColor(card)">
   {{currency()}}
-  <section *ngIf="card?.underConstruction" class="underConstruction">
-    В разработке
-  </section>
+  @if (card?.underConstruction) {
+    <section class="underConstruction">
+      В разработке
+    </section>
+  }
   <section>
-    <div *ngIf="card?.title" class="mp_card-title">
-      {{ card?.title }}
-    </div>
+    @if (card?.title) {
+      <div class="mp_card-title">
+        {{ card?.title }}
+      </div>
+    }
     <div class="mp_card-body">
-      <div *ngFor="let field of card?.subfields" class="mp_card-body_item">
-        <section>
-          {{ field.name }}
+      @for (field of card?.subfields; track field) {
+        <div class="mp_card-body_item">
+          <section>
+            {{ field.name }}
+          </section>
+          <section class="right_part">
+            @if (field.diffInPercents) {
+              <span
+                [ngClass]="{ 'red-text': field.diffInPercents < 0, 'green-text': field.diffInPercents > 0 }">
+                @if (field.diffInPercents > 0) {
+                  <span>+</span>
+                  }{{ field.diffInPercents }} %
+                </span>
+              }
+              @if (field.ratioInPercents) {
+                <span>
+                  {{ field.ratioInPercents }} %
+                </span>
+              }
+              <span>
+                {{ field.value | number: '1.0-0' }} {{this.selectedCurrency}}
+              </span>
+            </section>
+          </div>
+        }
+      </div>
+    </section>
+
+    @if (card?.drr) {
+      <div class="mp_card-footer">
+        <section class="drr-line">
+          <span>ДРР по продажам</span>
+          @if (isNumber(card?.salesPercent || 0)) {
+            <span> {{ card?.salesPercent | number: '1.1-1' | mpUnit: 'percent' }}</span>
+          }
         </section>
-        <section class="right_part">
-          <span *ngIf="field.diffInPercents"
-            [ngClass]="{ 'red-text': field.diffInPercents < 0, 'green-text': field.diffInPercents > 0 }">
-            <span *ngIf="field.diffInPercents > 0">+</span>{{ field.diffInPercents }} %
-          </span>
-          <span *ngIf="field.ratioInPercents">
-            {{ field.ratioInPercents }} %
-          </span>
-          <span>
-            {{ field.value | number: '1.0-0' }} {{this.selectedCurrency}}
-          </span>
+        <section class="drr-line" style="font-weight: 600;">
+          <span>ДРР по заказам</span>
+          @if (isNumber(card?.ordersPercent || 0)) {
+            <span> {{ card?.ordersPercent | number: '1.1-1' | mpUnit: 'percent' }}</span>
+          }
         </section>
       </div>
-    </div>
-  </section>
+    } @else {
+      @if (card?.totalSum || card?.totalSum == 0 || card?.totalUnits|| card?.totalUnits == 0 || isNumber(card?.salesPercent || 0) || isNumber(card?.ordersPercent || 0)) {
+        <div class="mp_card-footer">
+          @if (card?.totalCount) {
+            <span> {{ card?.totalCount | number: '1.0-0' | mpUnit: 'item' }}</span>
+          }
+          @if (isNumber(card?.salesPercent || 0)) {
+            <span placement="right" ngbTooltip="ДРР по продажам"> {{ card?.salesPercent | number: '1.1-1' | mpUnit: 'percent' }}</span>
+          }
+          <section class="mp_card-footer_total">
+            @if (isNumber(card?.ordersPercent || 0)) {
+              <span placement="right" ngbTooltip="ДРР по заказам"> {{ card?.ordersPercent | number: '1.1-1' | mpUnit: 'percent' }}</span>
+            }
+            @if (card?.totalSum || card?.totalSum == 0) {
+              <span>{{ card?.totalSum | number: '1.0-0'}}  {{this.selectedCurrency}}</span>
+            }
+            @if (card?.totalUnits || card?.totalUnits == 0) {
+              <span>{{ card?.totalUnits }}</span>
+            }
+            @if (card?.diffInPercents) {
+              <span placement="left"  class="mp_card-footer_total_hint">
+                <span>{{ (card?.diffInPercents || 0) < 0 ? '↓' : '↑' }}</span><span>{{ (card?.diffInPercents || 0) | mpUnit: 'percent' }}</span>
+              </span>
+            }
+          </section>
+        </div>
+      }
+    }
+  </article>
 
-  <div *ngIf="card?.drr; else tpl" class="mp_card-footer">
-    <section class="drr-line">
-      <span>ДРР по продажам</span>
-      <span *ngIf="isNumber(card?.salesPercent || 0)"> {{ card?.salesPercent | number: '1.1-1' | mpUnit: 'percent' }}</span>
-    </section>
-    <section class="drr-line" style="font-weight: 600;">
-      <span>ДРР по заказам</span>
-      <span *ngIf="isNumber(card?.ordersPercent || 0)"> {{ card?.ordersPercent | number: '1.1-1' | mpUnit: 'percent' }}</span>
-    </section>
-  </div>
-</article>
-
-<ng-template #tpl>
-  <div *ngIf="card?.totalSum || card?.totalSum == 0 || card?.totalUnits|| card?.totalUnits == 0 || isNumber(card?.salesPercent || 0) || isNumber(card?.ordersPercent || 0)" class="mp_card-footer">
-    <span *ngIf="card?.totalCount"> {{ card?.totalCount | number: '1.0-0' | mpUnit: 'item' }}</span>
-    <span *ngIf="isNumber(card?.salesPercent || 0)" placement="right" ngbTooltip="ДРР по продажам"> {{ card?.salesPercent | number: '1.1-1' | mpUnit: 'percent' }}</span>
-    <section class="mp_card-footer_total">
-      <span *ngIf="isNumber(card?.ordersPercent || 0)" placement="right" ngbTooltip="ДРР по заказам"> {{ card?.ordersPercent | number: '1.1-1' | mpUnit: 'percent' }}</span>
-      <span *ngIf="card?.totalSum || card?.totalSum == 0">{{ card?.totalSum | number: '1.0-0'}}  {{this.selectedCurrency}}</span>
-      <span *ngIf="card?.totalUnits || card?.totalUnits == 0">{{ card?.totalUnits }}</span>
-      <span *ngIf="card?.diffInPercents" placement="left"  class="mp_card-footer_total_hint">
-        <span>{{ (card?.diffInPercents || 0) < 0 ? '↓' : '↑' }}</span><span>{{ (card?.diffInPercents || 0) | mpUnit: 'percent' }}</span>
-        </span>
-    </section>
-  </div>
-</ng-template>
