@@ -13,7 +13,7 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { NzSwitchModule } from 'ng-zorro-antd/switch';
-import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
+import { NzTooltipModule } from 'ng-zorro-antd/tooltip';
 import { distinctUntilChanged, map } from 'rxjs';
 
 import { Reset, SetSelectedShop } from './actions/main.actions';
@@ -28,7 +28,7 @@ import { MainState } from './states/main.state';
     NzButtonModule, 
     NzIconModule, 
     NzMenuModule, 
-    NzToolTipModule, 
+    NzTooltipModule,
     NzPageHeaderModule, 
     NzSpaceModule, 
     RouterOutlet, 

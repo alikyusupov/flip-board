@@ -2,6 +2,7 @@ import {
   ApexAxisChartSeries,
   ApexChart,
   ApexDataLabels,
+  ApexFill,
   ApexGrid,
   ApexPlotOptions,
   ApexStroke,

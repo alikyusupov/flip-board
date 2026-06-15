@@ -6,22 +6,21 @@ import { AgGridAngular } from 'ag-grid-angular';
 import { ColDef, themeAlpine } from 'ag-grid-community';
 import { GlobalDateRangeService } from 'app/services/global-date-range.service';
 import { endOfMonth, format, startOfMonth } from 'date-fns';
-import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzSkeletonModule } from 'ng-zorro-antd/skeleton';
+import { lastValueFrom } from 'rxjs';
+
+import { FINANCES_SERVICE_TOKEN } from '../../tokens';
 import { LoadOperations } from './operations.actions';
 import { FIN_OPERATION_COLUMN_DEFS } from './operations.definition';
-import { FinancesOperationsState } from './operations.state';
-import { lastValueFrom } from 'rxjs';
 import { IFinOperationExportItem } from './operations.model';
-import { FINANCES_SERVICE_TOKEN } from '../../tokens';
+import { FinancesOperationsState } from './operations.state';
 
-declare namespace FileSaver {
-  function saveAs(data: Blob, filename?: string): void;
-}
+type SaveAsFn = (data: Blob, filename?: string) => void;
 
 interface IExcelWorksheet {
-  columns: Array<{ header: string; key: string; width: number }>;
+  columns: { header: string; key: string; width: number }[];
   addRow(data: Record<string, string | number>): void;
 }
 
@@ -42,8 +41,8 @@ interface IExcelJsModule {
 }
 
 interface IFileSaverModule {
-  saveAs?: typeof FileSaver.saveAs;
-  default?: typeof FileSaver.saveAs;
+  saveAs?: SaveAsFn;
+  default?: SaveAsFn;
 }
 
 @Component({

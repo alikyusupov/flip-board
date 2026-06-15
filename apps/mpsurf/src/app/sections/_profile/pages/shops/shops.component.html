@@ -69,7 +69,7 @@
         <nz-dropdown-menu #menu="nzDropdownMenu">
           <ul nz-menu>
             <li nz-menu-item>Отключить кабинет</li>
-            <li (click)="openDialog(shop, 'api-report')" nz-menu-item>Загрузить данные</li>
+            <li (click)="openDialog(shop, 'api-report')" (keyup.enter)="openDialog(shop, 'api-report')" tabindex="0" nz-menu-item>Загрузить данные</li>
           </ul>
         </nz-dropdown-menu>
 
