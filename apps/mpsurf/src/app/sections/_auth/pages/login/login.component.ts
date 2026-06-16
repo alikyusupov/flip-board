@@ -142,7 +142,7 @@ export class LoginComponent implements OnInit {
 
     this.$shops.subscribe(shoplist => {
       
-      if(shoplist.length === 1) {
+      if(shoplist?.length === 1) {
         this._store.dispatch(new SetSelectedShop(shoplist[0]));
         this._router.navigate(['../product-analytics/rates']);
       }

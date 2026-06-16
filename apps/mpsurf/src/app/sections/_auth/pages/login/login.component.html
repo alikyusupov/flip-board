@@ -130,11 +130,14 @@
       </form>
     }
 
-    <section class="shoplist" [@listAnimation]="shops().length">
-      @for (shop of shops(); track shop.id) {
-       <nz-tag (click)="onSelectShop(shop)" [nzColor]="shop.marketplace | tagColor">{{ shop.name }}</nz-tag>
-      }
-    </section>
+    @if(shops() && shops().length){
+      <section class="shoplist" [@listAnimation]="shops().length">
+        @for (shop of shops(); track shop.id) {
+         <nz-tag (click)="onSelectShop(shop)" [nzColor]="shop.marketplace | tagColor">{{ shop.name }}</nz-tag>
+        }
+      </section>
+    }
+
   </div>
   <div class="auth-page__item carousel">
     <app-carousel [images]="images"></app-carousel>
