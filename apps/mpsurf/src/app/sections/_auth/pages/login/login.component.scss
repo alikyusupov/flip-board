@@ -1,0 +1,116 @@
+[nz-carousel-content] {
+  text-align: center;
+  height: 160px;
+  line-height: 160px;
+  background: #364d79;
+  color: #fff;
+  overflow: hidden;
+}
+
+h3 {
+  color: #fff;
+  margin-bottom: 0;
+  user-select: none;
+}
+
+.auth-page {
+  display: flex;
+  height: 100%;
+
+  padding: 12px;
+
+  &__item {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    [nz-form] {
+      max-width: 600px;
+    }
+
+    .ant-select.ant-select-in-form-item.phone-select {
+      width: 90px;
+    }
+
+    .register-area {
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      gap: 4px;
+    }
+
+    &.form {
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .shoplist {
+      display: flex;
+
+      flex-wrap: wrap;
+
+      gap: 8px;
+
+    }
+  }
+}
+
+// Yandex Login Button Styles
+.yandex-login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 8px 24px;
+  height: 44px;
+  font-size: 15px;
+  font-weight: 500;
+  border-radius: 8px;
+  background-color: #000;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 260px;
+
+  &:hover {
+    background-color: #333;
+    color: #fff;
+  }
+
+  &:active {
+    background-color: #1a1a1a;
+  }
+
+  &:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+
+  .yandex-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+nz-divider {
+  width: 100%;
+  max-width: 400px;
+}
+
+.phone-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

@@ -1,0 +1,159 @@
+<app-filters-box [disabled]="(isChartsLoading$ | async) || false " [filterGroups]="filterGroups" (filterChangeEvent)="onFilterChangeEvent($event)"></app-filters-box>
+
+
+<section class="wrapper">
+
+  @if(isChartsLoading$ | async){
+    <section class="chart">
+      <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="round"></nz-skeleton-element>
+    </section>
+     <section class="chart">
+      <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="round"></nz-skeleton-element>
+    </section>
+     <section class="chart">
+      <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="round"></nz-skeleton-element>
+    </section>
+     <section class="chart">
+      <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="round"></nz-skeleton-element>
+    </section>
+  }
+
+  @else {
+
+    <section class="chart">
+      @if(ordersByDayOfTheWeek){
+        <apx-chart
+          [chart]="ordersByDayOfTheWeek.chart!"
+          [colors]="ordersByDayOfTheWeek.colors!"
+          [dataLabels]="ordersByDayOfTheWeek.dataLabels!"
+          [plotOptions]="ordersByDayOfTheWeek.plotOptions!"
+          [series]="ordersByDayOfTheWeek.series!"
+          [stroke]="ordersByDayOfTheWeek.stroke!"
+          [xaxis]="ordersByDayOfTheWeek.xaxis!">
+        </apx-chart>
+      }
+    </section>
+  
+    <section class="chart">
+      @if(ordersByDayOfWeekFromTo){
+        <apx-chart
+          [chart]="ordersByDayOfWeekFromTo.chart!"
+          [dataLabels]="ordersByDayOfWeekFromTo.dataLabels!"
+          [fill]="{ opacity: 1 }"
+          [plotOptions]="ordersByDayOfWeekFromTo.plotOptions!"
+          [series]="ordersByDayOfWeekFromTo.series!"
+          [stroke]="ordersByDayOfWeekFromTo.stroke!"
+          [xaxis]="ordersByDayOfWeekFromTo.xaxis!"
+          [yaxis]="{}" 
+        />
+      }
+    </section>
+  
+    <section class="chart">
+      @if(ordersByHoursFromTo){
+        <apx-chart
+          [chart]="ordersByHoursFromTo.chart!"
+          [dataLabels]="{ enabled: true }"
+          [fill]="{ opacity: 1 }"
+          [plotOptions]="ordersByHoursFromTo.plotOptions!"
+          [series]="ordersByHoursFromTo.series!"
+          [stroke]="ordersByHoursFromTo.stroke!"
+          [xaxis]="ordersByHoursFromTo.xaxis!"
+          [yaxis]="{}"
+        />
+      }
+    </section>
+  
+    <section class="chart">
+      @if(salesByDayOfTheWeek) {
+        <apx-chart
+          [chart]="salesByDayOfTheWeek.chart!"
+          [colors]="salesByDayOfTheWeek.colors!"
+          [dataLabels]="salesByDayOfTheWeek.dataLabels!"
+          [plotOptions]="salesByDayOfTheWeek.plotOptions!"
+          [series]="salesByDayOfTheWeek.series!"
+          [stroke]="salesByDayOfTheWeek.stroke!"
+          [xaxis]="salesByDayOfTheWeek.xaxis!">
+        </apx-chart>
+      }
+    </section>
+  
+    <section class="chart">
+      @if(salesByDayFromTo) {
+        <apx-chart
+          [chart]="salesByDayFromTo.chart!"
+          [dataLabels]="salesByDayFromTo.dataLabels!"
+          [fill]="{ opacity: 1 }"
+          [plotOptions]="salesByDayFromTo.plotOptions!"
+          [series]="salesByDayFromTo.series!"
+          [stroke]="salesByDayFromTo.stroke!"
+          [xaxis]="salesByDayFromTo.xaxis!"
+          [yaxis]="{}" 
+        />
+      }
+    </section>
+  
+    <section class="chart">
+      @if(salesByHoursFromTo) {
+        <apx-chart
+          [chart]="salesByHoursFromTo.chart!"
+          [dataLabels]="{ enabled: true }"
+          [fill]="{ opacity: 1 }"
+          [plotOptions]="salesByHoursFromTo.plotOptions!"
+          [series]="salesByHoursFromTo.series!"
+          [stroke]="salesByHoursFromTo.stroke!"
+          [xaxis]="salesByHoursFromTo.xaxis!"
+          [yaxis]="{}" 
+        />
+      }
+    </section>
+  
+    <section class="chart">
+      @if(ordersAverageCheckByDayOfWeek) {
+        <apx-chart
+          [chart]="ordersAverageCheckByDayOfWeek.chart!"
+          [colors]="ordersAverageCheckByDayOfWeek.colors!"
+          [dataLabels]="ordersAverageCheckByDayOfWeek.dataLabels!"
+          [plotOptions]="ordersAverageCheckByDayOfWeek.plotOptions!"
+          [series]="ordersAverageCheckByDayOfWeek.series!"
+          [stroke]="ordersAverageCheckByDayOfWeek.stroke!"
+          [title]="ordersAverageCheckByDayOfWeek.title!"
+          [xaxis]="ordersAverageCheckByDayOfWeek.xaxis!">
+        </apx-chart>
+      }
+    </section>
+  
+    <section class="chart">
+      @if(ordersInRubblesByDay) {
+        <apx-chart
+          [chart]="ordersInRubblesByDay.chart!"
+          [dataLabels]="ordersInRubblesByDay.dataLabels!"
+          [fill]="ordersInRubblesByDay.fill!"
+          [plotOptions]="ordersInRubblesByDay.plotOptions!"
+          [series]="ordersInRubblesByDay.series!"
+          [stroke]="ordersInRubblesByDay.stroke!"
+          [xaxis]="ordersInRubblesByDay.xaxis!"
+          [yaxis]="ordersInRubblesByDay.yaxis!" 
+        />
+      }
+    </section>
+  
+    <section class="chart">
+      @if(ordersAverageReceiptByHours) {
+        <apx-chart
+          [chart]="ordersAverageReceiptByHours.chart!"
+          [dataLabels]="ordersAverageReceiptByHours.dataLabels!"
+          [fill]="ordersAverageReceiptByHours.fill!"
+          [plotOptions]="ordersAverageReceiptByHours.plotOptions!"
+          [series]="ordersAverageReceiptByHours.series!"
+          [stroke]="ordersAverageReceiptByHours.stroke!"
+          [xaxis]="ordersAverageReceiptByHours.xaxis!"
+          [yaxis]="ordersAverageReceiptByHours.yaxis!" 
+        />
+      }
+    </section>
+  }
+
+</section>
+
+

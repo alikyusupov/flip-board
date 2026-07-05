@@ -1,0 +1,253 @@
+<app-filters-box [disabled]="((isTable1_loading$ | async) || (isTable2_loading$ | async) || (isTable4_loading$ | async)) || false " [filterGroups]="filterGroups" (filterChangeEvent)="onFilterChangeEvent($event)"></app-filters-box>
+
+<section class="rnp__panels">
+  <mat-paginator (page)="onPage($event)" [length]="paginationLength" [pageIndex]="selectedPage-1" [pageSize]="1" [hidePageSize]="true" aria-label="Select page">
+  </mat-paginator>
+  <mat-accordion multi displayMode="flat">
+
+    @if(marketplace() !== marketplaceEnum.OZON){
+      <mat-expansion-panel [expanded]="true">
+        <button (click)="openDialog(customizator1)" nz-button nzType="text">
+           Настройки <nz-icon nzType="setting" nzTheme="outline" />
+        </button>
+        <mat-expansion-panel-header>
+          <mat-panel-title> Воронка продаж </mat-panel-title>
+        </mat-expansion-panel-header>
+        @if (isTable2_loading$ | async) {
+          <mat-spinner [diameter]="30"></mat-spinner>
+        }
+        @else {
+          <ag-grid-angular
+            (gridReady)="onGridReady2($event)"
+            [suppressFieldDotNotation]="true"
+            [columnDefs]="table2_columnDefs"
+            [defaultColDef]="defaultColDef"
+            [enableCellTextSelection]="true"
+            [rowData]="table2_data"
+            [domLayout]="'autoHeight'"
+            [rowHeight]="30"
+            [tooltipShowDelay]="0" 
+            [theme]="theme"
+            overlayNoRowsTemplate="Нет данных для отображения"
+            class="ag-theme-alpine"
+            [headerHeight]="28"
+            style="width: 100%;"
+          />
+        }
+      </mat-expansion-panel>
+    }
+
+    <mat-expansion-panel [expanded]="true">
+      <button (click)="openDialog(customizator2)" nz-button nzType="text">
+         Настройки <nz-icon nzType="setting" nzTheme="outline" />
+      </button>
+      <mat-expansion-panel-header>
+        <mat-panel-title> Общая аналитика </mat-panel-title>
+      </mat-expansion-panel-header>
+      @if (isTable1_loading$ | async) {
+        <mat-spinner [diameter]="30"></mat-spinner>
+      }
+      @else{
+        <ag-grid-angular
+          (gridReady)="onGridReady1($event)"
+          [suppressFieldDotNotation]="true"
+          [columnDefs]="table1_columnDefs"
+          [defaultColDef]="defaultColDef"
+          [enableCellTextSelection]="true"
+          [rowData]="table1_data"
+          [domLayout]="'autoHeight'"
+          [rowHeight]="30"
+          [tooltipShowDelay]="0" 
+          [theme]="theme"
+          overlayNoRowsTemplate="Нет данных для отображения"
+          class="ag-theme-alpine"
+          [headerHeight]="28"
+          style="width: 100%;"
+        />
+      }
+    </mat-expansion-panel>
+
+     @if(marketplace() !== marketplaceEnum.OZON){
+       <mat-expansion-panel [expanded]="true">
+         <button (click)="openDialog(customizator3)" nz-button nzType="text">
+           Настройки <nz-icon nzType="setting" nzTheme="outline" />
+         </button>
+         <mat-expansion-panel-header>
+           <mat-panel-title> Оборачиваемость и остатки </mat-panel-title>
+         </mat-expansion-panel-header>
+         @if (isTable4_loading$ | async) {
+           <mat-spinner [diameter]="30"></mat-spinner>
+         }
+         @else {
+            <ag-grid-angular
+             (gridReady)="onGridReady4($event)"
+             [suppressFieldDotNotation]="true"
+             [columnDefs]="table4_columnDefs"
+             [defaultColDef]="defaultColDef"
+             [enableCellTextSelection]="true"
+             [rowData]="table4_data"
+             [domLayout]="'autoHeight'"
+             [rowHeight]="30"
+             [tooltipShowDelay]="0" 
+             [theme]="theme"
+             overlayNoRowsTemplate="Нет данных для отображения"
+             class="ag-theme-alpine"
+             [headerHeight]="28"
+             style="width: 100%;"
+           />
+         }
+       </mat-expansion-panel>
+     }
+
+  </mat-accordion> 
+</section>
+
+<ng-template #customizator1>
+  <section class="customizator-modal">
+    <h4>Выберите колонки и их расположение</h4>
+    <div class="customizator-header">
+      <button (click)="setCheckboxesState(TableEnum.VORONKA, true)" nz-button nzType="text">Выбрать все</button>
+      <button (click)="setCheckboxesState(TableEnum.VORONKA, false)" nz-button nzType="text">Снять все</button>
+    </div>
+
+    <section class="customizator-wrapper" cdkScrollable>
+
+      <h5>Воронка продаж</h5>
+
+      <div
+        cdkDropList
+        class="example-list"
+        (cdkDropListDropped)="dropVoronka($event)"
+        [cdkDropListAutoScrollStep]="20"
+      >
+        @for (category of voronka_categories; track $index) {
+          <div
+            class="example-box"
+            cdkDrag
+            cdkDragLockAxis="y"
+            [cdkDragData]="category"
+            [cdkDragDisabled]="category.dragDisabled"
+          >
+            <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+  
+            @if (!category.dragDisabled) {
+              <nz-icon nzType="holder" nzTheme="outline" />
+            }
+
+            <span 
+              nz-checkbox 
+              [(ngModel)]="category.checked"
+              [nzDisabled]="category.disabled"
+              (ngModelChange)="onCheckboxesChangeVoronka($event, category.key)" 
+            >{{category.name}}</span>
+  
+          </div>
+        }
+      </div>
+    </section>
+
+    <div class="customizator-footer">
+      <button (click)="onCheckboxesSave(TableEnum.VORONKA)" nz-button nzType="text">Сохранить</button>
+    </div>
+  </section>
+</ng-template>
+
+<ng-template #customizator2>
+  <section class="customizator-modal">
+    <h4>Выберите колонки и их расположение</h4>
+    <div class="customizator-header">
+      <button (click)="setCheckboxesState(TableEnum.GENERAL, true)" nz-button nzType="text">Выбрать все</button>
+      <button (click)="setCheckboxesState(TableEnum.GENERAL, false)" nz-button nzType="text">Снять все</button>
+    </div>
+
+    <section class="customizator-wrapper" cdkScrollable>
+
+      <h5>Общая аналитика</h5>
+
+      <div
+        cdkDropList
+        class="example-list"
+        (cdkDropListDropped)="dropGeneral($event)"
+        [cdkDropListAutoScrollStep]="20"
+      >
+        @for (category of general_categories; track $index) {
+          <div
+            class="example-box"
+            cdkDrag
+            cdkDragLockAxis="y"
+            [cdkDragData]="category"
+            [cdkDragDisabled]="category.dragDisabled"
+          >
+            <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+  
+            @if (!category.dragDisabled) {
+              <nz-icon nzType="holder" nzTheme="outline" />
+            }
+
+            <span 
+              nz-checkbox 
+              [(ngModel)]="category.checked"
+              [nzDisabled]="category.disabled"
+              (ngModelChange)="onCheckboxesChangeGeneral($event, category.key)" 
+            >{{category.name}}</span>
+  
+          </div>
+        }
+      </div>
+    </section>
+
+    <div class="customizator-footer">
+      <button (click)="onCheckboxesSave(TableEnum.GENERAL)" nz-button nzType="text">Сохранить</button>
+    </div>
+  </section>
+</ng-template>
+
+<ng-template #customizator3>
+  <section class="customizator-modal">
+    <h4>Выберите колонки и их расположение</h4>
+    <div class="customizator-header">
+      <button (click)="setCheckboxesState(TableEnum.TURNOVER, true)" nz-button nzType="text">Выбрать все</button>
+      <button (click)="setCheckboxesState(TableEnum.TURNOVER, false)" nz-button nzType="text">Снять все</button>
+    </div>
+
+    <section class="customizator-wrapper" cdkScrollable>
+
+      <h5>Оборачиваемость и остатки</h5>
+
+      <div
+        cdkDropList
+        class="example-list"
+        (cdkDropListDropped)="dropTurnover($event)"
+        [cdkDropListAutoScrollStep]="20"
+      >
+        @for (category of turnover_categories; track $index) {
+          <div
+            class="example-box"
+            cdkDrag
+            cdkDragLockAxis="y"
+            [cdkDragData]="category"
+            [cdkDragDisabled]="category.dragDisabled"
+          >
+            <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+  
+            @if (!category.dragDisabled) {
+              <nz-icon nzType="holder" nzTheme="outline" />
+            }
+
+            <span 
+              nz-checkbox 
+              [(ngModel)]="category.checked"
+              [nzDisabled]="category.disabled"
+              (ngModelChange)="onCheckboxesChangeTurnover($event, category.key)" 
+            >{{category.name}}</span>
+  
+          </div>
+        }
+      </div>
+    </section>
+
+    <div class="customizator-footer">
+      <button (click)="onCheckboxesSave(TableEnum.TURNOVER)" nz-button nzType="text">Сохранить</button>
+    </div>
+  </section>
+</ng-template>

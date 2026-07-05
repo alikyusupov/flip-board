@@ -1,0 +1,41 @@
+<section class="cards">
+
+  @if (isReconciliationCardsLoading$ | async) {
+    @for (skl of cardSkeletons; track $index) {
+      <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="round"></nz-skeleton-element>
+    }
+  }
+  @else {
+    @for (card of reconciliationCards$ | async; track $index) {
+      <app-card [card]="card"></app-card>
+    }
+  }
+
+</section>
+
+<section class="table">
+
+  @if (isReconciliationListLoading$ | async) {
+    <div class="skeleton">
+      @for (skl of skeletons; track $index) {
+        <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="square"></nz-skeleton-element>
+      }
+    </div>
+  }
+  @else {
+    <ag-grid-angular
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDef"
+      [rowData]="reconciliations$ | async"
+      [pagination]="true"
+      [paginationPageSize]="15"
+      [domLayout]="'autoHeight'"
+      [enableCellTextSelection]="true"
+      [tooltipShowDelay]="0" 
+      [theme]="theme"
+      class="ag-theme-alpine"
+      style="width: 100%;" 
+    />
+  }
+
+</section>

@@ -1,0 +1,29 @@
+<section class="table">
+
+  @if(isTableLoading$ | async){
+    <div class="skeleton">
+      @for (skl of skeletons; track $index) {
+        <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="square"></nz-skeleton-element>
+      }
+    </div>
+  }
+  @else {
+    <ag-grid-angular
+      [columnDefs]="columnDefs"
+      [defaultColDef]="defaultColDefs"
+      [pagination]="true"
+      [paginationPageSize]="30"
+      [domLayout]="'autoHeight'"
+      [rowData]="rowData"
+      [rowDragManaged]="true"
+      [rowHeight]="40"
+      [tooltipShowDelay]="0" 
+      [theme]="theme"
+      overlayNoRowsTemplate="Нет данных для отображения"
+      class="ag-theme-alpine"
+      rowSelection="multiple"
+      style="width: 100%;" 
+    />
+  }
+
+</section>

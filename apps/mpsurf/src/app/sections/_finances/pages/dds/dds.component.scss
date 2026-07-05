@@ -1,0 +1,18 @@
+:host {
+  width: 100%;
+
+  ::ng-deep .chart {
+    .atn-skeleton, .ant-skeleton-element {
+      width: 100% !important;
+    }
+    .ant-skeleton-button {
+      width: 100% !important;
+      height: 480px;
+    }
+  }
+
+}
+
+.chart, .table {
+  padding: 12px;
+}

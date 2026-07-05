@@ -1,0 +1,184 @@
+<article class="mp_card">
+
+  <section class="level1">
+
+    <div class="title-group">
+      <span>{{card().title}}</span>
+
+      @if(card().description){
+        <nz-icon nzType="info-circle" nzTheme="outline" nz-tooltip [nzTooltipTitle]="card().description"/>
+      }
+    </div>
+    
+    <div>
+
+      @if(titlesWithReversedLogic.includes(card().title)){
+
+        @if(card().totalSumDiff > 0){
+          <!-- RED UP -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M4.24264 1C4.24264 0.447715 4.69036 0 5.24264 0H13.7279C14.2802 0 14.7279 0.447715 14.7279 1V9.48528C14.7279 10.0376 14.2802 10.4853 13.7279 10.4853C13.1756 10.4853 12.7279 10.0376 12.7279 9.48528V3.41421L1.70711 14.435C1.31658 14.8256 0.683417 14.8256 0.292893 14.435C-0.0976311 14.0445 -0.0976311 13.4113 0.292893 13.0208L11.3137 2H5.24264C4.69036 2 4.24264 1.55228 4.24264 1Z"
+              fill="#EB4334" />
+          </svg>
+        }
+
+        @if(card().totalSumDiff < 0){
+          <!-- GREEN DOWN -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd"
+              d="M0.928941 0.928945C1.31946 0.538421 1.95263 0.538421 2.34315 0.928945L13.364 11.9498V5.87869C13.364 5.32641 13.8117 4.87869 14.364 4.87869C14.9163 4.87869 15.364 5.32641 15.364 5.87869V14.364C15.364 14.9163 14.9163 15.364 14.364 15.364H5.87869C5.3264 15.364 4.87869 14.9163 4.87869 14.364C4.87869 13.8117 5.3264 13.364 5.87869 13.364H11.9498L0.928941 2.34316C0.538416 1.95263 0.538416 1.31947 0.928941 0.928945Z"
+              fill="#007B11" />
+          </svg>
+        }
+
+      }
+
+      @if(!titlesWithReversedLogic.includes(card().title)){
+
+        @if(card().totalSumDiff < 0){
+          <!-- RED DOWN -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M0.928941 0.928945C1.31946 0.538421 1.95263 0.538421 2.34315 0.928945L13.364 11.9498V5.87869C13.364 5.32641 13.8117 4.87869 14.364 4.87869C14.9163 4.87869 15.364 5.32641 15.364 5.87869V14.364C15.364 14.9163 14.9163 15.364 14.364 15.364H5.87869C5.3264 15.364 4.87869 14.9163 4.87869 14.364C4.87869 13.8117 5.3264 13.364 5.87869 13.364H11.9498L0.928941 2.34316C0.538416 1.95263 0.538416 1.31947 0.928941 0.928945Z" fill="#EB4334"/>
+          </svg>
+
+        }
+
+        @if(card().totalSumDiff > 0){
+          <!-- GREEN UP -->
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M4.24264 1C4.24264 0.447715 4.69036 0 5.24264 0H13.7279C14.2802 0 14.7279 0.447715 14.7279 1V9.48528C14.7279 10.0376 14.2802 10.4853 13.7279 10.4853C13.1756 10.4853 12.7279 10.0376 12.7279 9.48528V3.41421L1.70711 14.435C1.31658 14.8256 0.683417 14.8256 0.292893 14.435C-0.0976311 14.0445 -0.0976311 13.4113 0.292893 13.0208L11.3137 2H5.24264C4.69036 2 4.24264 1.55228 4.24264 1Z" fill="#007B11"/>
+          </svg>
+
+        }
+
+      }
+
+    </div>
+
+  </section>
+
+  @if(card().totalSum){
+    <section class="level1" style="margin-top: 14px; margin-bottom: 4px;">
+  
+      <div>
+        <span>{{card().totalSum | number: '1.0-0'}} {{ (currency() | mpcurrency).icon }}</span>
+      </div>
+  
+      @if(card().totalSumDiff){
+        <div
+          [ngClass]="{
+            'green-text': (card().totalSumDiff > 0 && !titlesWithReversedLogic.includes(card().title)) || (card().totalSumDiff < 0 && titlesWithReversedLogic.includes(card().title)), 
+            'red-text' : (card().totalSumDiff < 0 && !titlesWithReversedLogic.includes(card().title)) || (card().totalSumDiff > 0 && titlesWithReversedLogic.includes(card().title)),
+          }"
+        >
+          {{ card().totalSumDiff < 0 ? '↓' : '↑' }}
+          <span>{{card().totalSumDiff | number: '1.0-0'}} {{ (currency() | mpcurrency).icon }}</span>
+        </div>
+      }
+  
+    </section>
+
+  }
+
+  @if (card().ordersPercent) {
+    <section class="level1">
+  
+      <div>
+        <span>{{card().ordersPercent | number: '1.0-0' | mpUnit: 'percent'}}</span>
+      </div>
+
+      @if(card().ordersPercentDiff){
+        <div
+          [ngClass]="{
+            'green-text': (card().ordersPercentDiff > 0 && !titlesWithReversedLogic.includes(card().title)) || (card().ordersPercentDiff < 0 && titlesWithReversedLogic.includes(card().title)), 
+            'red-text' : (card().ordersPercentDiff < 0 && !titlesWithReversedLogic.includes(card().title)) || (card().ordersPercentDiff > 0 && titlesWithReversedLogic.includes(card().title)),
+          }"
+        >
+          {{ card().totalSumDiff < 0 ? '↓' : '↑' }}
+          <span>{{card().ordersPercentDiff | number: '1.0-1' | mpUnit: 'percent'}}</span>
+        </div>
+      }
+  
+  
+    </section>
+
+  }
+
+  @if(card().totalCount){
+    <section class="level2">
+  
+      <div>
+        <span>{{card().totalCount | number: '1.0-0' | mpUnit: 'item'}}</span>
+      </div>
+
+      @if(card().ordersPercentDiff){
+        <div
+          [ngClass]="{
+            'green-text': (card().totalCountDiff > 0 && !titlesWithReversedLogic.includes(card().title)) || (card().totalCountDiff < 0 && titlesWithReversedLogic.includes(card().title)), 
+            'red-text' : (card().totalCountDiff < 0 && !titlesWithReversedLogic.includes(card().title)) || (card().totalCountDiff > 0 && titlesWithReversedLogic.includes(card().title)),
+          }"
+        >
+          {{ card().totalCountDiff < 0 ? '↓' : '↑' }}
+          <span>{{card().totalCountDiff | number: '1.0-0' | mpUnit: 'item'}}</span>
+        </div>
+
+      }
+  
+  
+    </section>
+
+  }
+
+  @for (field of card().subfields; track $index) {
+    <section class="level3">
+  
+      <div class="left-part">
+        <span style="font-weight: 500;">{{field.name}}</span>
+        <span>{{ field.unit !== 'rubles' ? (field.value | number: '1.0-0' | mpUnit: field.unit) : ((field.value | number: '1.0-0') + ' ' + (currency() | mpcurrency).icon) }}</span>
+      </div>
+
+      @if(field.valueDiff){
+        <div
+          class="right-part"
+          [ngClass]="{
+            'green-text': (field.valueDiff > 0 && !fieldsWithReversedLogic.includes(field.name)) || (field.valueDiff < 0 && fieldsWithReversedLogic.includes(field.name)), 
+            'red-text' : (field.valueDiff < 0 && !fieldsWithReversedLogic.includes(field.name)) || (field.valueDiff > 0 && fieldsWithReversedLogic.includes(field.name)),
+          }"
+        >
+    
+          {{ field.valueDiff < 0 ? '↓' : '↑' }}
+          <span>{{field.valueDiff | number: '1.0-0' | mpUnit: field.unit}}</span>
+    
+        </div>
+
+      }
+  
+  
+    </section>
+
+  }
+
+</article>
+
+<!-- GREEN UP -->
+<!-- <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M4.24264 1C4.24264 0.447715 4.69036 0 5.24264 0H13.7279C14.2802 0 14.7279 0.447715 14.7279 1V9.48528C14.7279 10.0376 14.2802 10.4853 13.7279 10.4853C13.1756 10.4853 12.7279 10.0376 12.7279 9.48528V3.41421L1.70711 14.435C1.31658 14.8256 0.683417 14.8256 0.292893 14.435C-0.0976311 14.0445 -0.0976311 13.4113 0.292893 13.0208L11.3137 2H5.24264C4.69036 2 4.24264 1.55228 4.24264 1Z" fill="#007B11"/>
+</svg> -->
+
+<!-- GREEN DOWN -->
+<!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M0.928941 0.928945C1.31946 0.538421 1.95263 0.538421 2.34315 0.928945L13.364 11.9498V5.87869C13.364 5.32641 13.8117 4.87869 14.364 4.87869C14.9163 4.87869 15.364 5.32641 15.364 5.87869V14.364C15.364 14.9163 14.9163 15.364 14.364 15.364H5.87869C5.3264 15.364 4.87869 14.9163 4.87869 14.364C4.87869 13.8117 5.3264 13.364 5.87869 13.364H11.9498L0.928941 2.34316C0.538416 1.95263 0.538416 1.31947 0.928941 0.928945Z" fill="#007B11" />
+</svg> -->
+
+<!-- RED UP -->
+<!-- <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M4.24264 1C4.24264 0.447715 4.69036 0 5.24264 0H13.7279C14.2802 0 14.7279 0.447715 14.7279 1V9.48528C14.7279 10.0376 14.2802 10.4853 13.7279 10.4853C13.1756 10.4853 12.7279 10.0376 12.7279 9.48528V3.41421L1.70711 14.435C1.31658 14.8256 0.683417 14.8256 0.292893 14.435C-0.0976311 14.0445 -0.0976311 13.4113 0.292893 13.0208L11.3137 2H5.24264C4.69036 2 4.24264 1.55228 4.24264 1Z" fill="#EB4334" />
+</svg> -->
+
+<!-- RED DOWN -->
+<!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M0.928941 0.928945C1.31946 0.538421 1.95263 0.538421 2.34315 0.928945L13.364 11.9498V5.87869C13.364 5.32641 13.8117 4.87869 14.364 4.87869C14.9163 4.87869 15.364 5.32641 15.364 5.87869V14.364C15.364 14.9163 14.9163 15.364 14.364 15.364H5.87869C5.3264 15.364 4.87869 14.9163 4.87869 14.364C4.87869 13.8117 5.3264 13.364 5.87869 13.364H11.9498L0.928941 2.34316C0.538416 1.95263 0.538416 1.31947 0.928941 0.928945Z" fill="#EB4334"/>
+</svg> -->
+
+

@@ -1,0 +1,54 @@
+nz-page-header-extra {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+nz-icon {
+  font-size: 1.2rem;
+}
+
+nz-select {
+  min-width: 120px;
+  max-width: 200px;
+}
+
+.wrapper {
+  width: 280px;
+  height: 100%;
+  &-collapsed {
+    width: 80px;
+  }
+}
+
+.app-wrapper {
+
+  height: 100%;
+
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  display: flex;
+
+  width: 100%;
+
+  background: var(--color-100);
+  color: var(--color-100-contrast);
+}
+
+.active {
+  background-color: #e6f7ff;
+  color: #1890ff
+}
+
+.span-group {
+  cursor: pointer;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+
+}

@@ -1,0 +1,15 @@
+<section class="modal">
+  <div class="header">
+    Название подключения
+  </div>
+  <div class="body">
+    <nz-form-item>
+      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Введите название">
+        <input nz-input [formControl]="connectionNameControl" />
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div class="footer">
+    <button nz-button [disabled]="connectionNameControl.invalid || !valueHasChanged()" nzType="primary" (click)="submit()">Сохранить</button>
+  </div>
+</section>

@@ -1,0 +1,80 @@
+<section class="shops-page">
+
+  @let isShopListLoading = (isloading$ | async) || false;
+  @let shops = shops$ | async;
+
+  @if (isShopListLoading) {
+
+    @for (skl of skeletons; track $index) {
+        <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="round"></nz-skeleton-element>
+    }
+
+  }
+
+  @else {
+    @for (shop of shops; track shop.id) {
+
+      @let shadowed = !!shop.sign_ozon ? 'ozon-shadow' : 'wb-shadow';
+
+      <article [class]="'shop ' + shadowed" >
+        <nz-card [nzActions]="[actionSetting, actionEdit]">
+          <nz-card-meta
+            [nzAvatar]="avatarTemplate"
+            [nzTitle]="shop.name"
+          ></nz-card-meta>
+        
+          <ul class="shop-list">
+            <li class="shop-list__item">
+              <span class="title">Название подключения</span>
+              <button nz-button nzType="text" (click)="openDialog(shop, 'connection-name')" class="value">
+                {{shop.name}} <nz-icon nzType="edit" />
+              </button>
+            </li>
+            <li class="shop-list__item">
+              <span class="title">Налог (ставка)</span>
+              <button nz-button nzType="text" (click)="openDialog(shop, 'tax')" class="value">
+                {{shop.tax_percent}} % <nz-icon nzType="edit" />
+              </button>
+            </li>
+            <li class="shop-list__item">
+              <span class="title">Налог (вид)</span><span class="value">{{shop.tax_type | taxType}}</span>
+            </li>
+            <li class="shop-list__item">
+              <span class="title">Валюта</span>
+
+              <button nz-button nzType="text" (click)="openDialog(shop, 'currency')" class="value">
+                {{shop.currency_name}} {{(shop.currency_name | mpcurrency).description}} {{(shop.currency_name | mpcurrency).icon}} <nz-icon nzType="edit" />
+              </button>
+
+            </li>
+            <li></li>
+          </ul>
+
+          <ng-template #actionSetting>
+            <nz-icon nzType="setting" nz-dropdown [nzDropdownMenu]="menu" />
+          </ng-template>
+
+          <ng-template #actionEdit>
+            <nz-icon nzType="edit" />
+          </ng-template>
+            
+        </nz-card>
+
+        @let logoSrc = !!shop.sign_ozon ? '/assets/images/ozon-logo.webp' : '/assets/images/wb-logo.jpg';
+
+        <ng-template #avatarTemplate>
+          <nz-avatar [nzSrc]="logoSrc"></nz-avatar>
+        </ng-template>
+
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+          <ul nz-menu>
+            <li nz-menu-item>Отключить кабинет</li>
+            <li (click)="openDialog(shop, 'api-report')" (keyup.enter)="openDialog(shop, 'api-report')" tabindex="0" nz-menu-item>Загрузить данные</li>
+          </ul>
+        </nz-dropdown-menu>
+
+      </article>
+    }
+  }
+
+</section>

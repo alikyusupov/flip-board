@@ -1,0 +1,78 @@
+<section class="filters-box-page">
+  @for (filterGroup of filterGroups(); track $index) {
+
+    <div class="filters-group">
+
+      @for (item of filterGroup; track item) {
+
+        @switch (item.type) {
+
+          @case ('select') {
+
+            <section class="filters-group__select">
+              @if(item.withPrefix) {
+                {{item.prefix}}
+              }
+
+              <nz-select 
+                [(ngModel)]="selectsMap[item.id]"
+                [nzPlaceHolder]="item.placeholder"
+                nzShowArrow
+                (ngModelChange)="onSelectChange()"
+                [nzDisabled]="disabled()"
+              >
+                @for (option of item.options; track option) {
+                  <nz-option [nzValue]="option.value" [nzLabel]="option.label"></nz-option>
+                }
+              </nz-select>
+            </section>
+
+          }
+
+          @case ('multi-select') {
+            <nz-select
+              [nzMaxTagCount]="3"
+              [nzMaxTagPlaceholder]="tagPlaceHolder"
+              nzMode="multiple"
+              [nzPlaceHolder]="item.placeholder"
+              nzAllowClear
+              nzShowArrow
+              [(ngModel)]="multiselectsMap[item.id]"
+              (ngModelChange)="onMultiselectChange()"
+              [nzDisabled]="disabled()"
+            >
+              @for (option of item.options; track option) {
+                <nz-option [nzLabel]="option.label" [nzValue]="option.value"></nz-option>
+              }
+            </nz-select>
+            <ng-template #tagPlaceHolder let-selectedList>еще {{ selectedList.length }} выбрано</ng-template>
+          }
+
+          @case ('multi-button') {
+            <nz-segmented 
+              [(ngModel)]="multibuttonsMap[item.id]" 
+              [nzOptions]="item.options" 
+              (ngModelChange)="onMultibuttonChange()"
+              [nzDisabled]="disabled()"
+              >
+            </nz-segmented>
+
+          }
+
+          @case ('checkbox') {
+            <span 
+              nz-checkbox 
+              [(ngModel)]="checkboxesMap[item.id]"
+              (ngModelChange)="onCheckboxChange()"
+              [nzDisabled]="disabled()"
+            >{{item.checkboxtext}}</span>
+          }
+
+        }
+
+      }
+
+    </div>
+
+  }
+</section>

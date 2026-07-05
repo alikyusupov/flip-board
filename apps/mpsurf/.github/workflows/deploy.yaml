@@ -1,0 +1,37 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --force
+
+      - name: Build
+        run: npm run build:prod
+
+      - name: Deploy dist folder via FTP
+        uses: SamKirkland/FTP-Deploy-Action@4.1.0
+        with:
+          server: 95.143.191.235
+          username: ${{ secrets.ftp_username_front2_test }}
+          password: ${{ secrets.ftp_password_front2_test }}
+          protocol: ftp
+          port: 21
+          local-dir: ./dist/mpsurf2/browser/

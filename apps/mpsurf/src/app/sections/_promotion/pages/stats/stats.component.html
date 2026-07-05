@@ -1,0 +1,46 @@
+<app-filters-box [disabled]="(isTableLoading$ | async) || (isChartLoading$ | async) || false " [filterGroups]="filterGroups" (filterChangeEvent)="onFilterChangeEvent($event)"></app-filters-box>
+
+<section class="chart">
+  @if(isChartLoading$ | async){
+    <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="round"></nz-skeleton-element>
+  }
+  @else {
+    <apx-chart 
+      [series]="chartOptions()?.series!" 
+      [chart]="chartOptions()?.chart!" 
+      [xaxis]="chartOptions()?.xaxis!"
+      [yaxis]="chartOptions()?.yaxis!" 
+      [dataLabels]="chartOptions()?.dataLabels!" 
+      [stroke]="chartOptions()?.stroke!"
+      [legend]="chartOptions()?.legend!" 
+    />
+  }
+</section>
+
+<section class="table">
+  @if (isTableLoading$ | async) {
+    <div class="skeleton">
+      @for (skl of skeletons; track $index) {
+        <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="square"></nz-skeleton-element>
+      }
+    </div>
+  }
+  @else {
+    <ag-grid-angular
+      [defaultColDef]="defaultColDefs"
+      [columnDefs]="columnDefs"
+      [rowData]="table$ | async"
+      [rowHeight]="30"
+      [pagination]="true"
+      [paginationPageSize]="15"
+      [domLayout]="'autoHeight'"
+      [enableCellTextSelection]="true"
+      [pinnedBottomRowData]="summaryRow"
+      [tooltipShowDelay]="0" 
+      [theme]="theme"
+      overlayNoRowsTemplate="Нет данных для отображения"
+      class="ag-theme-alpine"
+      style="width: 100%;"
+    />
+  }
+</section>

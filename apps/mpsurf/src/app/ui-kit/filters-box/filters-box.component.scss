@@ -1,0 +1,25 @@
+nz-select {
+  width: 300px;
+}
+
+.filters-box-page {
+  padding: 0 18px;
+}
+
+.filters-group {
+  display: flex;
+  flex-wrap: wrap;
+
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 8px;
+
+  &__select {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+  }
+}

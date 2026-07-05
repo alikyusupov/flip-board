@@ -1,0 +1,66 @@
+:host {
+  width: 100%;
+
+  ::ng-deep .cards {
+    .ant-skeleton-button {
+      width: 300px;
+      height: 180px;
+    }
+  }
+
+  ::ng-deep .chart {
+    .atn-skeleton, .ant-skeleton-element {
+      width: 100% !important;
+    }
+    .ant-skeleton-button {
+      width: 100% !important;
+      height: 480px;
+    }
+  }
+
+  ::ng-deep .table {
+    .atn-skeleton, .ant-skeleton-element {
+      width: 100% !important;
+    }
+    .ant-skeleton-button {
+      width: 100% !important;
+      height: 40px;
+    }
+  }
+
+  ::ng-deep .apexcharts-legend-group {
+    flex-direction: row !important;
+  }
+}
+
+.chart {
+  padding: 18px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 300px);
+  gap: 18px;
+
+  padding: 18px;
+}
+
+.table {
+
+  padding: 18px;
+
+  .skeleton {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+.axes {
+  block-size: 18.75rem;
+}
+
+
+nz-select {
+  width: 300px;
+}

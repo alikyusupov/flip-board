@@ -1,0 +1,19 @@
+<section class="modal">
+  <div class="header">
+    Выберите валюту
+  </div>
+  <div class="body">
+    <nz-form-item>
+      <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="Выберите валюту">
+        <nz-select [formControl]="currencyControl"  nzPlaceHolder="Выберите валюту">
+          @for (currItem of currency_list; track $index) {
+            <nz-option [nzLabel]="currItem.label" [nzValue]="currItem.value"></nz-option>
+          }
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+  </div>
+  <div class="footer">
+    <button nz-button [disabled]="currencyControl.invalid || !valueHasChanged()" nzType="primary" (click)="submit()">Сохранить</button>
+  </div>
+</section>

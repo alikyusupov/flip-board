@@ -1,0 +1,48 @@
+<section class="table">
+
+  <button nz-button nzType="primary">
+    <nz-icon nzType="download" nzTheme="outline" />
+    Скачать шаблон
+  </button>
+  <button nz-button nzType="default">
+    <nz-icon nzType="file-excel" nzTheme="outline" />
+    Загрузить из Excel
+  </button>
+  <button nz-button nzType="dashed">
+    <nz-icon nzType="file-add" nzTheme="outline" />
+    Добавить операцию
+  </button>
+
+  @if (isOperationsListLoading$ | async) {
+    <div class="skeleton">
+      @for (skl of skeletons; track $index) {
+        <nz-skeleton-element nzType="button" [nzActive]="true" nzShape="square"></nz-skeleton-element>
+      }
+    </div>
+  }
+  @else {
+    <section style="position: relative;">
+      <ag-grid-angular
+        [columnDefs]="columnDefs"
+        [defaultColDef]="defaultColDef"
+        [pagination]="true"
+        [paginationPageSize]="30"
+        [domLayout]="'autoHeight'"
+        [rowData]="operations$ | async"
+        [rowDragManaged]="true"
+        [rowHeight]="40"
+        [suppressRowTransform]="true"
+        [tooltipShowDelay]="0" 
+        [theme]="theme"
+        overlayNoRowsTemplate="Нет данных для отображения"
+        class="ag-theme-alpine"
+        rowSelection="multiple"
+        style="width: 100%" 
+      />
+      <button class="excel-btn" nz-button nzType="dashed" (click)="onExportToExcel()">
+        <nz-icon nzType="export" nzTheme="outline" />
+        Экспорт в Excel
+      </button>
+    </section>
+  }
+</section>

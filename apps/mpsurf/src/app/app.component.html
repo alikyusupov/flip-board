@@ -1,0 +1,124 @@
+@if (isAuthRoute()) {
+  <router-outlet></router-outlet>
+} @else {
+  <div class="app-wrapper">
+    @let shops = (shops$ | async) || [];
+
+  <header>
+    <nz-page-header nzBackIcon [nzGhost]="false">
+      <nz-page-header-title>
+        <button nz-button nzType="text" (click)="toggleCollapsed()">
+          <nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'" />
+        </button>
+      </nz-page-header-title>
+      <nz-page-header-title routerLink="product-analytics/rates">MP SURF</nz-page-header-title>
+
+      <nz-page-header-extra>
+
+        <span class="span-group" routerLink="profile/shops">
+          <nz-icon nzType="shop" nzTheme="outline" />
+          <span>Магазины</span>
+        </span>
+
+        <span class="span-group">
+          <nz-icon nzType="read" nzTheme="outline" />
+          <span>
+            <a href="https://docs.google.com/document/d/1CraY2aEUsIrF6Bd2-YMljk3fUK5WQADp_uzzd18VsSY/edit?tab=t.0" target="_blank">
+              База знаний
+            </a>
+          </span>
+        </span>
+        
+
+        
+      </nz-page-header-extra>
+
+      <nz-page-header-extra>
+
+        <nz-space>
+          <nz-switch [formControl]="themeControl" [nzCheckedChildren]="checkedTemplate" [nzUnCheckedChildren]="unCheckedTemplate">
+          </nz-switch>
+          <ng-template #checkedTemplate><nz-icon nzType="sun" /></ng-template>
+          <ng-template #unCheckedTemplate><nz-icon nzType="moon" /></ng-template>
+        </nz-space>
+        
+        <nz-select 
+          nzShowSearch 
+          [formControl]="shopControl"
+          style="width: 300px;"
+        >
+          @for (shop of shops; track $index) {
+            <nz-option [nzLabel]="shop.name" [nzValue]="shop.id"></nz-option>
+          }
+        </nz-select>
+
+        <nz-space>
+          <button (click)="logout()" nz-button nzType="primary">
+            <nz-icon nzType="logout" nzTheme="outline" />
+            Выйти
+          </button>
+        </nz-space>
+
+      </nz-page-header-extra>
+    </nz-page-header>
+  </header>
+
+  <main style="flex: 1;">
+    
+    <aside>
+      <div [class.wrapper-collapsed]="isCollapsed" class="wrapper">
+        <ul style="height: 100%;" [nzTheme]="(theme$ | async) || 'light'" nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+          <li nz-submenu nzTitle="Товарная аналитика" nzIcon="rise">
+            <ul>
+              <li routerLinkActive="active" routerLink="product-analytics/rates" nz-menu-item>Общие показатели</li>
+              <li routerLinkActive="active" routerLink="product-analytics/rnp" nz-menu-item>РНП (Воронка)</li>
+              <li routerLinkActive="active" routerLink="product-analytics/orders" nz-menu-item>Заказы</li>
+              <li routerLinkActive="active" routerLink="product-analytics/sales" nz-menu-item>Продажи</li>
+              <li routerLinkActive="active" routerLink="product-analytics/abc" nz-menu-item>ABC анализ</li>
+            </ul>
+          </li>
+          <li nz-submenu nzTitle="Финансы" nzIcon="rise">
+            <ul>
+              <li routerLinkActive="active" routerLink="finances/plan-fact" nz-menu-item>ПЛАН-ФАКТ</li>
+              <li routerLinkActive="active" routerLink="finances/pnl" nz-menu-item>ОПиУ (PnL)</li>
+              <li routerLinkActive="active" routerLink="finances/dds" nz-menu-item>ДДС (CashFlow)</li>
+              <li routerLinkActive="active" routerLink="finances/operations" nz-menu-item>Операции</li>
+              <li routerLinkActive="active" routerLink="finances/reconciliation" nz-menu-item>Сверка с ЛК ВБ</li>
+            </ul>
+          </li>
+          <li nz-submenu nzTitle="Продвижение" nzIcon="rise">
+            <ul>
+              <li routerLinkActive="active" routerLink="promotion/drr" nz-menu-item>ДРР</li>
+              <li routerLinkActive="active" routerLink="promotion/stats" nz-menu-item>Статистика РК</li>
+              <li routerLinkActive="active" routerLink="promotion/heatmap" nz-menu-item>Тепловая карта</li>
+            </ul>
+          </li>
+          <li nz-submenu nzTitle="Планирование остатков" nzIcon="rise">
+            <ul>
+              <li routerLinkActive="active" routerLink="planning/remains" nz-menu-item>Остатки</li>
+              <li routerLinkActive="active" routerLink="planning/clusters" nz-menu-item>Кластеры</li>
+              <li routerLinkActive="active" routerLink="planning/costprice" nz-menu-item>Себестоимость</li>
+            </ul>
+          </li>
+          <li nz-submenu nzTitle="Настройки" nzIcon="rise">
+            <ul>
+              <li routerLinkActive="active" routerLink="settings/items" nz-menu-item>Статьи</li>
+              <li routerLinkActive="active" routerLink="settings/partners" nz-menu-item>Конрагенты</li>
+            </ul>
+          </li>
+          <li nz-submenu nzTitle="Мой профиль" nzIcon="rise">
+            <ul>
+              <li routerLinkActive="active" routerLink="profile/shops" nz-menu-item>Кабинеты</li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </aside>
+    
+    <section style="flex: 1;">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
+    <footer></footer>
+  </div>
+}
