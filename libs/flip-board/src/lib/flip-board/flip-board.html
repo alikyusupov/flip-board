@@ -1,0 +1,9 @@
+<div #boardContainer class="w-full mx-auto" [style.max-width.px]="maxWidthPx()">
+  <canvas
+    #splitCanvas
+    (click)="onCanvasClick()"
+    aria-label="vintage split-flap departure board"
+    role="img"
+    class="block w-full h-auto cursor-pointer transition-transform duration-200 ease-in-out active:scale-[0.995] focus-visible:outline-2 focus-visible:outline-[#7b8299] focus-visible:outline-offset-4"
+  ></canvas>
+</div>
