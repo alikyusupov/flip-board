@@ -1,31 +1,27 @@
 {
-  "name": "angular-monorepo",
+  "name": "mpsurf",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "app",
-  "sourceRoot": "apps/angular-monorepo/src",
+  "sourceRoot": "apps/mpsurf/src",
   "tags": [],
   "targets": {
     "build": {
       "executor": "@angular/build:application",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
       "options": {
-        "outputPath": "dist/apps/angular-monorepo",
-        "browser": "apps/angular-monorepo/src/main.ts",
-        "tsConfig": "apps/angular-monorepo/tsconfig.app.json",
+        "outputPath": "dist/apps/mpsurf",
+        "browser": "apps/mpsurf/src/main.ts",
+        "tsConfig": "apps/mpsurf/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/angular-monorepo/public"
+            "input": "apps/mpsurf/public"
           }
         ],
-        "styles": [
-          "apps/angular-monorepo/src/styles.scss"
-        ]
+        "styles": ["apps/mpsurf/src/styles.scss"]
       },
       "configurations": {
         "production": {
@@ -56,10 +52,10 @@
       "defaultConfiguration": "development",
       "configurations": {
         "production": {
-          "buildTarget": "angular-monorepo:build:production"
+          "buildTarget": "mpsurf:build:production"
         },
         "development": {
-          "buildTarget": "angular-monorepo:build:development"
+          "buildTarget": "mpsurf:build:development"
         }
       }
     },
@@ -76,8 +72,8 @@
       "continuous": true,
       "executor": "@nx/web:file-server",
       "options": {
-        "buildTarget": "angular-monorepo:build",
-        "staticFilePath": "dist/apps/angular-monorepo/browser",
+        "buildTarget": "mpsurf:build",
+        "staticFilePath": "dist/apps/mpsurf/browser",
         "spa": true
       }
     }

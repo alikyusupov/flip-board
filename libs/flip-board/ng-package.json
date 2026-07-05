@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../dist/libs/flap-board",
+  "dest": "../../dist/libs/flip-board",
   "lib": {
     "entryFile": "src/index.ts"
   }

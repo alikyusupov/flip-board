@@ -1,6 +1,17 @@
 # flip-board
 
+markdown
+# flip-board
+
 A high-quality, canvas-based flip-board component for Angular. Create stunning animated word displays with smooth flip transitions and customizable themes.
+
+[![npm version](https://img.shields.io/npm/v/@angular-monorepo/flip-board.svg)](https://www.npmjs.com/package/@angular-monorepo/flip-board)
+
+## 🎬 Preview
+
+![FlipBoard Animation](./flip-board.gif)
+
+## ✨ Features
 
 [![npm version](https://img.shields.io/npm/v/@angular-monorepo/flip-board.svg)](https://www.npmjs.com/package/@angular-monorepo/flip-board)
 

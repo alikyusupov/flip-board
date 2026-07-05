@@ -1,17 +1,18 @@
 {
-  "name": "flap-board",
+  "name": "@alikyusupov/flip-board",
   "description": "A high-quality, canvas-based flip-board component for Angular. Create stunning animated word displays with smooth flip transitions and customizable themes.",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "author": {
     "name": "Alik Yusupov",
     "email": "iamalisher87@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/alikyusupov/flip-board.git"
   },
   "peerDependencies": {
     "@angular/core": "^21.2.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "dependencies": {}
 }
