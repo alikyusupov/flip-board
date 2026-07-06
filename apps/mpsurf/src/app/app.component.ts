@@ -22,6 +22,8 @@ import { AuthState } from './sections/_auth/auth.state';
 import { ThemeService } from './services/theme.service';
 import { MainState } from './states/main.state';
 
+import { FlapBoardComponent } from '@alikyusupov/flip-board'
+
 @Component({
   selector: 'app-root',
   imports: [
@@ -38,6 +40,7 @@ import { MainState } from './states/main.state';
     ReactiveFormsModule, 
     AsyncPipe,
     NzSelectModule,
+    FlapBoardComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
